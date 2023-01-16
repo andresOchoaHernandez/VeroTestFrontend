@@ -1,0 +1,213 @@
+.home{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: #aec4c4;
+}
+.containerleft{
+    border-radius: 10px;
+    border: var(--border-color);
+    height: 45vh;
+    width: 55vw;
+    overflow: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;  
+    margin-top:3vh; 
+    margin-right: 2vw; 
+    margin-left: 1vw;
+}
+.headerleft{
+    text-align: left;
+    font-size: 4vh;
+    font-weight: bold;
+    color: var(--primary-color);
+    width: 35vw;
+    margin-top:1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+
+}
+.containerleftbottom{
+    border-radius: 10px;
+    border: var(--border-color);
+    text-align: center; 
+    margin-top:3vh;
+    margin-left: 1vw;
+    height: 40vh;
+    width: 55vw;
+}
+.headerleftbottom{
+    text-align: left;
+    font-size: 4vh;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-top:1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.divtestinexec{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: scroll;
+}
+.divinfotestinexec{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 2vh;
+}
+.descript{
+    font-family: inherit;
+    text-align: left;
+    font-size: 2vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    flex-wrap: nowrap;  
+    color:var(--secondary-color);  
+}
+.starttest{
+    font-size: 1.5vw;
+    color:var(--primary-color);
+}
+.starttest:hover{
+    font-size: 2vw;
+    color:var(--primary-color);
+}
+.divextraicon{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+.containerextraicon{
+    align-content: center;
+    border-radius: 20px;
+    border-style: hidden;
+    bottom: 1vh;
+    position:absolute;
+    top:10vh;
+    left:65vw;
+    height: 80vh;
+    width: 25vw;
+    margin: 1%;
+}
+.iconuser{
+    font-size: 3vw;
+    margin-top: 10vh;
+    color: var(--primary-color);
+}
+.iconuser:hover{
+    font-size: 3.5vw;
+    color:var(--primary-color);
+}
+.iconbox{
+    border: hidden;
+    background-color: transparent;
+    font-size: 3vw;
+    margin-top: 30vh;
+    color: var(--primary-color);
+}
+.iconbox:hover{
+    font-size: 3.5vw;
+    color:var(--primary-color);
+}
+.iconlogout{
+    border: hidden;
+    background-color:transparent;
+    font-size: 3vw;
+    color: var(--primary-color);
+    margin-top: 20vh;
+}
+.headerleftnewtest{
+    margin-top: 2vh;
+    text-align: left;
+    font-size: 2vw;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-left:1vw;
+    width: 40vw;
+}
+.create{
+    border-style: hidden;
+    background-color: transparent;    
+    font-size: 1.5vw;
+    font-weight: bold;
+    color:var(--primary-color);
+    margin-left: 1vw;
+}
+.create:hover{
+    font-size: 2vw;
+    color:var(--primary-color);
+}
+/*adattamento div sinistra schermo cellulare orientamento verticale*/
+@media screen and (orientation:portrait){
+    .containerleft{
+        margin:1vw;
+        height: 45vh;
+        width: 98vw;
+    }
+    .headerleft{
+        font-size: 5vw;
+        width: 90vw;
+        height: 5vh;
+        margin-bottom: 0vh;
+    }
+    .containerleftbottom{
+        height: 30vh;
+        width: 98vw;
+    }
+    .headerleftbottom{
+        font-size: 5vw;
+        font-weight: bold;
+    }
+    .descript{
+        font-size: 5vw;
+    }
+    .starttest{
+        position: relative;
+        font-size: 5vw;
+        color:var(--primary-color);
+    }
+    .iconlogout{
+        font-size: 5vw;
+        margin-top: 1vh;
+        margin-left: 37vw;
+    }
+    .create{
+        font-size: 4vw;
+        left:50vw;
+        top:2vh;
+    }
+    .divextraicon{
+        height: 15vh;
+        flex-direction: row; 
+    }
+    .containerextraicon{
+        top:80vh;
+        left:1vw;
+        height: 15vh;
+        width: 95vw;
+    }
+    .iconuser{
+        font-size: 6vw;
+        margin-top: 1vh;
+        margin-left: 20vw;
+        color: var(--primary-color);
+    }
+    .iconbox{
+        font-size: 6vw;
+        margin-top: 1vh;
+        margin-left: 30vw;
+        color: var(--primary-color);
+    }
+}

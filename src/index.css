@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
+:root{
+  font-family: 'Releway', lighter, sans-serif;
+  --primary-color: #ba262e;
+  --secondary-color: black;
+  --third-color:white;
+  --border-color: 1px solid #707070;
+}
+h1{
+  text-align: left;
+  font-weight: lighter;
+  font-size: 8vw;
+  color: var(--primary-color);
+  text-align: center;
+}
+h2{
+  font-weight: lighter;
+  font-size: 5vw;
+  color: var(--secondary-color);
+}
+h3{
+  font-size: 2vw;
+  font-weight: bold;
+}
+h4{
+  font-size: 2vw;
+  color: var(--primary-color);
+}
+h5{
+  font-size: 1.5vw;
+  margin-right: 1vw;
+  flex-wrap: nowrap;
+  font-size: 1.2vw;
+  align-self:center;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  letter-spacing: 0.12em;
+  word-spacing: 0.16em;
+}

@@ -18,7 +18,7 @@ function FormInput(){
             localStorage.setItem("username", username);
             localStorage.setItem("scope",scope)
             
-            //window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
+            window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
         })
         .catch(error => {
             if(error.response.status === 401){

@@ -2,7 +2,7 @@ import {GraphQLClient,gql} from 'graphql-request'
 
 class api{
     constructor(){
-        this.client  = new GraphQLClient("http://localhost:8080/graphql", {headers:{authorization:'Bearer ' + localStorage.getItem("token")},mode:'cors'});
+        this.client  = new GraphQLClient("http://localhost:8080/graphql", {headers:{authorization:'Bearer ' + localStorage.getItem("token")}});
     }
 
     /* QUERIES */

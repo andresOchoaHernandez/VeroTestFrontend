@@ -17,10 +17,8 @@ function FormInput(){
             localStorage.setItem("token",token);
             localStorage.setItem("username", username);
             localStorage.setItem("scope",scope)
-
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             
-            window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
+            //window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
         })
         .catch(error => {
             if(error.response.status === 401){

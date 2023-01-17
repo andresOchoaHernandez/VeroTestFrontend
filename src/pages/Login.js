@@ -4,6 +4,9 @@ import Logo from '../components/Logo';
 import FormInput from '../components/FormInput';
 
 function LoginPage(){
+
+    localStorage.clear();
+
     return(
         <div className={classes.back} aria-label="pagina di login">
             <HomeTitle />

@@ -8,6 +8,7 @@ import HomeStudenti from './pages/HomeStudenti';
 import HomeDocenti from './pages/HomeDocenti';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NoPage from './pages/NoPage';
+import ExecuteExam from './components/ExecuteExam';
 
 function App()
 {
@@ -21,9 +22,13 @@ function App()
             <Route path="/home-studenti" element={<HomeStudenti/>}/>
           </Route>
 
-          <Route element ={<ProtectedRoutes allowedScope="STUDENTE DOCENTE"/>}>
+          <Route element ={<ProtectedRoutes allowedScope="DOCENTE"/>}>
             <Route path="/home-docenti" element={<HomeDocenti/>} />
           </Route>
+
+          <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>
+            <Route path="/esame/:data/:ora/:nome/question/:nquestion" element={<ExecuteExam/>}/>
+          <Route/>
         
         </Routes>
     </BrowserRouter>

@@ -5,6 +5,7 @@ import Anauthorized from "../pages/Unauthorized";
 
 function ProtectedRoutes(allowedScope){
 
+    //TODO: use state manager, this is not safe, one can change the value of the store in the local storage
     function isLoggedIn(){
         return localStorage.getItem("token")? true : false;
     }
@@ -14,7 +15,7 @@ function ProtectedRoutes(allowedScope){
     }
 
     return(
-        isLoggedIn() ? (getScope() === allowedScope.allowedScope ? <Outlet/> : <Anauthorized/>) : <LoginPage/>
+        isLoggedIn() ? (getScope().includes(allowedScope.allowedScope) ? <Outlet/> : <Anauthorized/>) : <LoginPage/>
     );
 }
 

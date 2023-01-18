@@ -5,17 +5,16 @@ import Table from './Table.js'
 function ExamList(){
 
     function executeTest(data,ora,nome){
-        console.log("sto per eseguire il test " + nome);
-        // TODO: navigare fino alla pagina di esecuzione del test
+        window.location.href=`/esame/${data}/${ora}/${nome}/question/0`;
     }
 
     const columns = useMemo(() => [
         {
             Header: "ESAMI DISPONIBILI",
             columns: [
-                {Header: "nome",accessor: "nome"},
-                {Header: "data",accessor: "data"},
-                {Header: "ora" ,accessor: "ora"},
+                {Header: "nome" ,accessor: "nome"},
+                {Header: "data" ,accessor: "data"},
+                {Header: "ora"  ,accessor: "ora" },
                 {
                     Header: ""    ,id:'eseguiTest',
                     Cell: cell => (

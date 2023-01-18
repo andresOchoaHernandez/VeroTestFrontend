@@ -18,7 +18,7 @@ class api{
                 }
             }
             `
-        this.client.request(query).then(resp => console.log(resp)).catch((error)=>{console.error(error.message)});
+        return this.client.request(query).catch((error)=>{console.log(error.message)});
     }
 
     getTestByDateHourAndName(date,hour,name){console.log("to be implemented")}

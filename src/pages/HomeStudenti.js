@@ -5,9 +5,7 @@ import classes from "./layout/HomePage.module.css"
 function HomeStudenti(){
     return(
         <div className={classes.home} aria-label="home studente">
-            <p>
-                THIS IS THE  STUDENTI HOME PAGE
-            </p>
+            <p>THIS IS THE  STUDENTI HOME PAGE</p>
             <ExamList/>
         </div>
     );

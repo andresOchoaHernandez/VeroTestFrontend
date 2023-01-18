@@ -27,7 +27,7 @@ function App()
           </Route>
 
           <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>
-            <Route path="/esame/:data/:ora/:nome/question/:nquestion" element={<ExecuteExam/>}/>
+            <Route path="/esame/:data/:ora/:nome/domanda/:nquestion" element={<ExecuteExam/>}/>
           <Route/>
         
         </Routes>

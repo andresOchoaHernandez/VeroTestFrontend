@@ -1,9 +1,19 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Question from "./Question";
+import { VeroTestGraphqlAPI } from "./VeroTestGraphqlAPI";
 
 function ExecuteExam(){
+    const {data,ora,nome,nquestion} = useParams();
+    const [questions,setData] = useState([]);
+    
+    useEffect(() => {VeroTestGraphqlAPI.getAllQuestionsOfTest(data,ora,nome).then(res=>{setData(res.allDomandaByTest)}).catch(err => {console.log(err)});},[data,ora,nome]);
 
-    const params = useParams();
-    console.log(params);
+    return(
+        <div>
+            {nquestion < questions.length ? <Question question={questions[nquestion]} lastQuestion={parseInt(nquestion) === parseInt(questions.length-1)}/> : <div>Questa domanda non esiste in questo esame</div>}
+        </div>
+    );
 }
 
 export default ExecuteExam;

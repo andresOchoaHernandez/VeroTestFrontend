@@ -5,7 +5,7 @@ import Table from './Table.js'
 function ExamList(){
 
     function executeTest(data,ora,nome){
-        window.location.href=`/esame/${data}/${ora}/${nome}/question/0`;
+        window.location.href=`/esame/${data}/${ora}/${nome}/domanda/0`;
     }
 
     const columns = useMemo(() => [
@@ -19,7 +19,7 @@ function ExamList(){
                     Header: ""    ,id:'eseguiTest',
                     Cell: cell => (
                         <button onClick={()=>executeTest(cell.row.values.data,cell.row.values.ora,cell.row.values.nome)}>
-                            ESEGUI TEST 
+                            ESEGUI TEST
                         </button>
                     )
                 }]

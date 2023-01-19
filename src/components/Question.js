@@ -1,29 +1,51 @@
 import {useState,useEffect} from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { VeroTestGraphqlAPI } from "./VeroTestGraphqlAPI";
 
 function Question({question,lastQuestion}){
 
-    console.log(lastQuestion);
+    const navigate = useNavigate();
 
     const params = useParams();
 
     const{nome,testo,punti,ordineCasuale,risposteConNumero} = question;
 
-    console.log(punti,ordineCasuale,risposteConNumero); // TO BE DELETED
+    function shuffle(punti,ordineCasuale,risposteConNumero){
+        //TODO:
+    }
+
+    shuffle(punti,ordineCasuale,risposteConNumero)
 
     const [answers,setData] = useState([]);
     
     useEffect(() => {VeroTestGraphqlAPI.getAllAnswersOfQuestion(nome).then(res=>{setData(res.allRispostaOfDomanda)}).catch(err => {console.log(err)});},[nome]);
 
-    function submitQuestion(givenAnswer){
+    async function submitQuestion(idAnswer){
+
         if(!lastQuestion){
-            //TODO: salva lo stato del test
+            const compilazione = {
+                idUtente: parseInt(localStorage.getItem("userId")),
+                dataTest: params.data,
+                oraTest:  params.ora,
+                nomeTest: params.nome,
+                nomeDomanda: nome,
+                idRisposta: parseInt(idAnswer.answer)
+            }
+
+            await VeroTestGraphqlAPI.insertCompilazione(compilazione);      
             window.location.href=`/esame/${params.data}/${params.ora}/${params.nome}/domanda/${parseInt(params.nquestion) + 1}`;
         }
         else{
-            //TODO: submit dell'esame e calcolo del punteggio
-            window.location.href=localStorage.getItem("scope").includes("DOCENTE")? "/home-docenti" : "/home-studenti";
+            const compilazione = {
+                idUtente: parseInt(localStorage.getItem("userId")),
+                dataTest: params.data,
+                oraTest:  params.ora,
+                nomeTest: params.nome,
+                nomeDomanda: nome,
+                idRisposta: parseInt(idAnswer.answer)
+            }
+            const riassunto = await VeroTestGraphqlAPI.completeTest(compilazione);
+            navigate(`/esame/${params.data}/${params.ora}/${params.nome}/summary`,{state:riassunto})   
         }
     }
 
@@ -37,7 +59,7 @@ function Question({question,lastQuestion}){
                     (input,index)=>{
                         return(
                             <div key={index}>
-                                <input name="answer" type="radio" value={input.testo} required/>
+                                <input name="answer" type="radio" value={input.id} required/>
                                 <label htmlFor={input.testo}>{input.testo}</label>
                             </div>
                         );

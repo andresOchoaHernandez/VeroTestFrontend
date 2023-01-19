@@ -8,7 +8,8 @@ import HomeStudenti from './pages/HomeStudenti';
 import HomeDocenti from './pages/HomeDocenti';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NoPage from './pages/NoPage';
-import ExecuteExam from './components/ExecuteExam';
+import ExecuteExam from './pages/ExecuteExam';
+import ExamSummary from './pages/ExamSummary';
 
 function App()
 {
@@ -28,6 +29,7 @@ function App()
 
           <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>
             <Route path="/esame/:data/:ora/:nome/domanda/:nquestion" element={<ExecuteExam/>}/>
+            <Route path="/esame/:data/:ora/:nome/summary" element={<ExamSummary/>}/>
           <Route/>
         
         </Routes>

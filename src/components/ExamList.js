@@ -5,6 +5,8 @@ import Table from './Table.js'
 function ExamList(){
 
     function executeTest(data,ora,nome){
+
+        //TODO: check if compilazione è già presente
         window.location.href=`/esame/${data}/${ora}/${nome}/domanda/0`;
     }
 

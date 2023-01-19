@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Question from "./Question";
-import { VeroTestGraphqlAPI } from "./VeroTestGraphqlAPI";
+import Question from "../components/Question";
+import { VeroTestGraphqlAPI } from "../components/VeroTestGraphqlAPI";
 
 function ExecuteExam(){
     const {data,ora,nome,nquestion} = useParams();

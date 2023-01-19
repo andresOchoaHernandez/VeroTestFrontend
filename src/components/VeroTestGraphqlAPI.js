@@ -54,6 +54,7 @@ class api{
         const query = gql`
         query allRispostaOfDomanda($domanda:String!){
             allRispostaOfDomanda(domanda:$domanda){
+                id,
                 testo,
                 punteggio
             }
@@ -72,6 +73,37 @@ class api{
     createRisposta(text,points,question){console.log("to be implemented")}
 
     connectDomandaToTest(question,testDate,testHour,testName){console.log("to be implemented")}
+
+    insertCompilazione(compilazione){
+        
+        const mutation = gql`
+        mutation insertCompilazione($input:compilazioneInput){
+            insertCompilazione(input:$input)
+        }`;
+
+        const vars = {
+            input: compilazione
+        };
+
+        return this.client.request(mutation,vars).catch((error)=>{console.log(error.message)});
+    }
+
+    completeTest(compilazione){
+        const mutation = gql`
+        mutation completeTest($input:compilazioneInput){
+            completeTest(input:$input){
+                rispostaData,
+                puntiRispostaData,
+                rispostaEsatta
+            }
+        }`;
+
+        const vars = {
+            input: compilazione
+        };
+        return this.client.request(mutation,vars).catch((error)=>{console.log(error.message)});
+    }
+
 }
 
 const VeroTestGraphqlAPI = new api(); 

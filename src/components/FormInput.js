@@ -13,10 +13,12 @@ function FormInput(){
             const username = jwt(response.data).sub
             const scope    = jwt(response.data).scope
             const token    = response.data
+            const userId   = jwt(response.data).userId
 
             localStorage.setItem("token",token);
             localStorage.setItem("username", username);
-            localStorage.setItem("scope",scope)
+            localStorage.setItem("scope",scope);
+            localStorage.setItem("userId",userId);
             
             window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
         })

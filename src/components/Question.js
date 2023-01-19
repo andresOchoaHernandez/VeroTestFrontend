@@ -43,7 +43,7 @@ function Question({question,lastQuestion}){
                         );
                     }
                 )}
-                {lastQuestion ? <button type="submit">CONCLUDI ESAME</button> : <button type="submit">PROSSIMA DOMANDA</button>}
+                <button type="submit">{lastQuestion ?"CONCLUDI ESAME":"PROSSIMA DOMANDA"}</button>
             </form>
         </div>
     );

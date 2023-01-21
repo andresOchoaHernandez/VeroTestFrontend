@@ -1,50 +1,81 @@
 import classes from '../pages/layout/LoginPage.module.css';
 import jwt from 'jwt-decode'
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { logout, setCredentials } from '../redux/AuthenticationSlice';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLoginMutation } from '../redux/VeroTestApiAuthentication';
 
 function FormInput(){
 
-    function submit(credentials)
-    {
-        axios
-        .post("http://localhost:8080/token",credentials)
-        .then(response => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-            const username = jwt(response.data).sub
-            const scope    = jwt(response.data).scope
-            const token    = response.data
-            const userId   = jwt(response.data).userId
+    const userRef = useRef()
+    const errorRef = useRef()
+    
+    const [username,setUsername]  = useState('');
+    const [password,setPassword]  = useState(''); 
+    const [error,setErrorMessage] = useState('');
 
-            localStorage.setItem("token",token);
-            localStorage.setItem("username", username);
-            localStorage.setItem("scope",scope);
-            localStorage.setItem("userId",userId);
+    const [login, {isLoading}] = useLoginMutation();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        try{
+            const token = await login({username,password}).unwrap();
+
+            const scope  = jwt(token).scope;
+            const userId = jwt(token).userId;
+
+            dispatch(setCredentials({username:username,scope:scope,token:token,userId:userId}));
+
+            navigate(scope === "STUDENTE"? "/home-studenti" : "/home-docenti");
             
-            window.location.href= scope === "STUDENTE"? "/home-studenti" : "/home-docenti";
-        })
-        .catch(error => {
-            if(error.response.status === 401){
-                document.getElementById("logErr").innerHTML = "<br>Credenziali non valide<br>";
+        }
+        catch(error){
+
+            if(error?.status === "FETCH_ERROR"){
+                setErrorMessage("IL SERVER DI AUTENTICAZIONE NON RISPONDE");
+            }
+            else if(error?.status === 401){
+                setErrorMessage("CREDENZIALI NON VALIDE");
             }
             else{
+                setErrorMessage("ERRORE LOGIN NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SITO");
                 console.log(error);
             }
-        });
+            
+            dispatch(logout());
+            errorRef.current.focus()
+        }
     }
 
+    useEffect(() => {userRef.current.focus()},[]);
+
+    useEffect(() => {setErrorMessage('')},[username,password]);
+
+    const handleUsernameInput = (event) => {setUsername(event.target.value)}
+
+    const handlePasswordInput = (event) => {setPassword(event.target.value)}
+
     return(
+        isLoading?
+        <h1> CARICAMENTO... </h1>
+        :
         <div className={classes.login} aria-label="finestra di login" tabIndex="4">
             <h2 tabIndex="5">LOGIN</h2>
             <div>
-                <form id="loginForm" autoComplete="off" onSubmit={(event) => {event.preventDefault();submit(Object.fromEntries(new FormData(event.target)));}}>
+                <form id="loginForm" autoComplete="off" onSubmit={handleSubmit}>
                     <div className={classes.divinput}>
-                        <input id="usr" type="text" name="username" placeholder="Unsername" className={classes.input} tabIndex="9" required></input>
+                        <input id="username" type="text" name="username" ref={userRef} value={username} onChange={handleUsernameInput} placeholder="Unsername" className={classes.input} tabIndex="9" required></input>
                         <br></br>
                         <br></br>
-                        <input id="pwd" type="password" name="password" placeholder="Password" className={classes.input} tabIndex="10" required></input>
+                        <input id="pwd" type="password" name="password" value={password} onChange={handlePasswordInput} placeholder="Password" className={classes.input} tabIndex="10" required></input>
                         <br></br>
                         <input type="submit" value="ACCEDI"className={classes.btnaccedi} tabIndex="11"></input>
-                        <div id="logErr" ></div>
+                        <p ref={errorRef} className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>
                     </div>
                 </form>
             </div>         

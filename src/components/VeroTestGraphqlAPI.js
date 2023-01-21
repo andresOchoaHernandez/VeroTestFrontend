@@ -1,8 +1,10 @@
 import {GraphQLClient,gql} from 'graphql-request'
 
+//  TODO: MODIFICA
+
 class api{
-    constructor(){
-        this.client  = new GraphQLClient("http://localhost:8080/graphql", {headers:{authorization:'Bearer ' + localStorage.getItem("token")}});
+    constructor(token){
+        this.client  = new GraphQLClient("http://localhost:8080/graphql", {headers:{authorization:`Bearer ${token}`}});
     }
 
     /* QUERIES */

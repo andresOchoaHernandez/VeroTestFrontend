@@ -19,8 +19,52 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                     }`
                 })
             })
-        })
+        }),
+        getAllQuestionsOfTest: builder.query({
+            query: ({data,ora,nome}) => ({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query: `
+                        query allDomandaByTest($data:String!,$hour:String!,$nome:String!){
+                            allDomandaByTest(data:$data,hour:$hour,nome:$nome){
+                                nome,
+                                testo,
+                                punti,
+                                ordineCasuale,
+                                risposteConNumero
+                            }
+                    }`,
+                    variables: {
+                        data:data,
+                        hour:ora,
+                        nome:nome
+                    }
+                })
+            })
+        }),
+        getAllAnswersOfQuestion: builder.query({
+            query: (question) => ({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query: `        
+                        query allRispostaOfDomanda($domanda:String!){
+                            allRispostaOfDomanda(domanda:$domanda){
+                                id,
+                                testo,
+                                punteggio
+                            }
+                    }`,
+                    variables: {
+                        domanda:question
+                    }
+                })
+            })
+        }),
     })
 });
 
 export const { useGetAllExamsQuery } = VeroTestApiExams;
+export const { useGetAllQuestionsOfTestQuery } = VeroTestApiExams;
+export const { useGetAllAnswersOfQuestionQuery } = VeroTestApiExams;

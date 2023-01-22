@@ -4,6 +4,9 @@ import Table from "../components/Table";
 
 function ExamSummary()
 {
+    return (<p> RIASSUNTO RISULTATI ESAME </p>)
+
+    /*
     const location = useLocation();
     const riassunto = location.state.completeTest;
 
@@ -27,7 +30,7 @@ function ExamSummary()
                 <p> Punteggio totale: {punteggioTotale}</p>
                 <Link to={localStorage.getItem("scope").includes("DOCENTE") ? "/home-docenti":"/home-studenti"}>HOME</Link>
         </div>
-    );
+    );*/
 }
 
 export default ExamSummary;

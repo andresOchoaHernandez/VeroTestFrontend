@@ -1,32 +1,27 @@
-import React,{useMemo} from "react";
+import React from "react";
 import Table from './Table.js'
 import { useGetAllExamsQuery } from "../redux/VeroTestApiExams";
+import { useNavigate } from "react-router-dom";
 
 function ExamList(){
 
-    function executeTest(data,ora,nome){
+    const navigate = useNavigate();
 
-        //TODO: check if compilazione è già presente
-        window.location.href=`/esame/${data}/${ora}/${nome}/domanda/0`;
-    }
-
-    const columns = useMemo(() => [
-        {
-            Header: "ESAMI DISPONIBILI",
-            columns: [
-                {Header: "nome" ,accessor: "nome"},
-                {Header: "data" ,accessor: "data"},
-                {Header: "ora"  ,accessor: "ora" },
-                {
-                    Header: ""    ,id:'eseguiTest',
-                    Cell: cell => (
-                        <button onClick={()=>executeTest(cell.row.values.data,cell.row.values.ora,cell.row.values.nome)}>
-                            ESEGUI TEST
-                        </button>
-                    )
-                }]
-        }]
-    ,[]);
+    const columns = [{
+        Header: "ESAMI DISPONIBILI",
+        columns: [
+            {Header: "nome" ,accessor: "nome"},
+            {Header: "data" ,accessor: "data"},
+            {Header: "ora"  ,accessor: "ora" },
+            {
+                Header: ""    ,id:'eseguiTest',
+                Cell: cell => (
+                    <button onClick={()=>navigate(`/esame/${cell.row.values.data}/${cell.row.values.ora}/${cell.row.values.nome}/domanda/0`)}>
+                        ESEGUI TEST
+                    </button>
+                )
+            }]
+    }];
 
     const {data:exams,isLoading,isSuccess,isError,error} = useGetAllExamsQuery();
 

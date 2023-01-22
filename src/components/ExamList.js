@@ -1,6 +1,6 @@
-import React,{useEffect, useMemo, useState} from "react";
-import { VeroTestGraphqlAPI } from "./VeroTestGraphqlAPI";
+import React,{useMemo} from "react";
 import Table from './Table.js'
+import { useGetAllExamsQuery } from "../redux/VeroTestApiExams";
 
 function ExamList(){
 
@@ -25,15 +25,21 @@ function ExamList(){
                         </button>
                     )
                 }]
-        }],[]);
-    const [data, setData] = useState([]);
-    useEffect(() => {VeroTestGraphqlAPI.getAllTests().then(res=>{setData(res.allTest)}).catch(err => {console.log(err)});},[]);
+        }]
+    ,[]);
 
-    return(
-        <div id="testDisponibili" aria-label="finestra con i test disponibili" tabIndex="10">
-              <Table columns={columns} data={data}/>  
-        </div>
-    );
+    const {data:exams,isLoading,isSuccess,isError,error} = useGetAllExamsQuery();
+
+    return isLoading ? 
+                <p>CARICAMENTO...</p>
+                :
+                isSuccess ?
+                    (<div id="testDisponibili" aria-label="finestra con i test disponibili" tabIndex="10"><Table columns={columns} data={exams.data.allTest}/></div>)
+                    :
+                    isError ?
+                        (<p>{JSON.stringify(error)}</p>)
+                        :
+                        (<p>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</p>);
 }
 
 export default ExamList;

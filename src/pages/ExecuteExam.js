@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import Question from "../components/Question";
 import { VeroTestGraphqlAPI } from "../components/VeroTestGraphqlAPI";
 
+//TODO: modificare utilizzando l'api con redux
+
 function ExecuteExam(){
     const {data,ora,nome,nquestion} = useParams();
     const [questions,setData] = useState([]);

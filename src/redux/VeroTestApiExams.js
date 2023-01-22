@@ -1,18 +1,26 @@
-
-/*
 import { VeroTestApi } from "./VeroTestApi";
 
 export const VeroTestApiExams = VeroTestApi.injectEndpoints({
     endpoints: builder => ({
-        getAllExams: builder.mutation({
+        getAllExams: builder.query({
             query: () => ({
                 url: '/graphql',
                 method:'POST',
-                body: {...credentials},
-                responseHandler: "text"
+                body: JSON.stringify({
+                    query: `                 
+                        query allTest{
+                            allTest{
+                                data,
+                                ora,
+                                nome,
+                                ordineCasuale,
+                                domandeConNumero
+                            }
+                    }`
+                })
             })
         })
     })
-});*/
+});
 
-//export const { useLoginMutation } = VeroTestApiExams;
+export const { useGetAllExamsQuery } = VeroTestApiExams;

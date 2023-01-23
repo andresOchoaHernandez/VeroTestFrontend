@@ -4,8 +4,8 @@ const initialState = {
     dataTest : null,
     oraTest  : null,
     nomeTest : null,
-    questions: null,
-    answers  : null
+    questions: [],
+    answers  : []
 }
 
 export const ExamExecutionSlice = createSlice({
@@ -19,6 +19,9 @@ export const ExamExecutionSlice = createSlice({
             state.nomeTest  = nomeTest;
             state.questions = questions;
             state.answers   = answers;
+        },
+        endExam: (state) => {
+            state = initialState;
         }
     }
 });

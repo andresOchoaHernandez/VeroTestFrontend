@@ -1,6 +1,4 @@
-import React,{useMemo} from "react";
-import { Link, useLocation } from "react-router-dom";
-import Table from "../components/Table";
+import React from 'react';
 
 function ExamSummary()
 {
@@ -13,8 +11,7 @@ function ExamSummary()
     const columns = useMemo(() => [
         {
             Header: "RIASSUNTO ESAME",
-            columns: [
-                {Header: "RISPOSTA DATA"  ,accessor: "rispostaData"},
+            columns: [                {Header: "RISPOSTA DATA"  ,accessor: "rispostaData"},
                 {Header: "PUNTI OTTENUTI" ,accessor: "puntiRispostaData"},
                 {Header: "RISPOSTA ESATTA"  ,accessor: "rispostaEsatta" },
             ]

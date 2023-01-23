@@ -62,9 +62,25 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                 })
             })
         }),
+        insertCompilazione : builder.mutation({
+            query: (compilazione) => ({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query:`
+                        mutation insertCompilazione($input:compilazioneInput){
+                            insertCompilazione(input:$input)
+                    }`,
+                    variables: {
+                        input:compilazione
+                    }
+                })
+            })
+        }),
     })
 });
 
 export const { useGetAllExamsQuery } = VeroTestApiExams;
 export const { useGetAllQuestionsOfTestQuery } = VeroTestApiExams;
 export const { useGetAllAnswersOfQuestionQuery } = VeroTestApiExams;
+export const { useInsertCompilazioneMutation } = VeroTestApiExams;

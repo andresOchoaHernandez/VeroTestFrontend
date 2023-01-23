@@ -26,7 +26,7 @@ function Question({question,lastQuestion}){
     const errorRef = useRef();
 
     useEffect(()=> {rispostaRef?.current?.focus()},[]);
-    useEffect(()=> {setErrorMessage('')},[]);
+
     const handleAnswer = (event) => {setIdRisposta(event.target.value)}
 
     const answeredQuestions = useSelector(selectCurrentquestions);
@@ -45,9 +45,8 @@ function Question({question,lastQuestion}){
             idRisposta: parseInt(idRisposta)
         }
 
-        if(!lastQuestion){
-
-            try{
+        try{
+            if(!lastQuestion){
                 const response = await insertCompilazione(compilazione).unwrap();
                 
                 if(response.data.insertCompilazione){
@@ -64,37 +63,29 @@ function Question({question,lastQuestion}){
                     })
                     newGivenAnswers.push(idRisposta);
 
-                    dispatch(setExamExecution({
-                        dataTest:data,
-                        oraTest:ora,
-                        nomeTest:nome,
-                        questions:newAnsweredQuestions,
-                        answers:newGivenAnswers, 
-                    }))
+                    dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,questions:newAnsweredQuestions,answers:newGivenAnswers}));
+                    navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
                 }
                 else{
-                    console.log("ERRORE NON GESTITO")
+                    setErrorMessage("NON È STATO POSSIBILE EFFETTUARE IL SALVATAGGIO DELLA RISPOSTA NEL SERVER");
                 }
-            
-                navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
             }
-            catch(error){
-                setErrorMessage(error.message);
-                console.log("ERRORE NON PREVISTO")
-                console.log(error)
-            }
-        }
-        else{
-            try{
+            else{
                 const response = await completeTest(compilazione).unwrap();
-                
                 dispatch(setExamResults({dataTest:data,oraTest:ora,nomeTest:nome,results:response.data.completeTest}))
                 dispatch(endExam);
-
                 navigate(`/esame/${data}/${ora}/${nome}/summary`);
             }
-            catch(error){
-                console.log(error);
+        }
+        catch(exception){
+            if(exception?.status === "FETCH_ERROR"){
+                setErrorMessage("NON È STATO POSSIBILE EFFETTUARE IL SALVATAGGIO DELLA RISPOSTA NEL SERVER");
+            }
+            else if(exception?.status === 401){
+                setErrorMessage("NON AUTORIZZATO, EFFETTUARE DI NUOVO IL LOGIN");
+            }
+            else{
+                setErrorMessage("ERRORE LOGIN NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SITO");
             }
         }
     };
@@ -114,13 +105,13 @@ function Question({question,lastQuestion}){
                                 <div key={index}>
                                     <input name="answer" type="radio" value={input.id} onChange={handleAnswer} ref={rispostaRef} required/>
                                     <label htmlFor={input.testo}>{input.testo}</label>
-                                    <p ref={errorRef} value={error}></p>
                                 </div>
                             );
                         }
                     )}
                     <button type="submit">{lastQuestion ?"CONCLUDI ESAME":"PROSSIMA DOMANDA"}</button>
                 </form>
+                <p ref={errorRef} value={error} className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>
             </div>)
             :
             isErrorAnswers ?

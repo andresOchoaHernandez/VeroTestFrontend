@@ -1,16 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    dataTest : null,
-    oraTest  : null,
-    nomeTest : null,
-    questions: [],
-    answers  : []
-}
-
 export const ExamExecutionSlice = createSlice({
     name : "examExecution",
-    initialState: initialState,
+    initialState: {
+        dataTest : null,
+        oraTest  : null,
+        nomeTest : null,
+        questions: [],
+        answers  : []
+    },
     reducers:{
         setExamExecution: (state,action) => {
             const {dataTest,oraTest,nomeTest,questions,answers} = action.payload;
@@ -21,7 +19,11 @@ export const ExamExecutionSlice = createSlice({
             state.answers   = answers;
         },
         endExam: (state) => {
-            state = initialState;
+            state.dataTest  = null;
+            state.oraTest   = null;
+            state.nomeTest  = null;
+            state.questions = [];
+            state.answers   = [];
         }
     }
 });

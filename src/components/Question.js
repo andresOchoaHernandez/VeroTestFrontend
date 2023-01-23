@@ -1,4 +1,3 @@
-//import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCompleteTestMutation, useGetAllAnswersOfQuestionQuery,useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +31,8 @@ function Question({question,lastQuestion}){
     const answeredQuestions = useSelector(selectCurrentquestions);
     const givenAswers       = useSelector(selectCurrentAnswers);
 
+    console.log(idRisposta)
+
     const handleSubmit = async (event) => {
 
         event.preventDefault();
@@ -44,12 +45,22 @@ function Question({question,lastQuestion}){
             nomeDomanda:question.nome,
             idRisposta: parseInt(idRisposta)
         }
+        
+        if(answeredQuestions.includes(question.nome)){
+            
+            if(givenAswers.includes(parseInt(idRisposta))){
+                navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
+                return;
+            }
+
+            givenAswers.splice(givenAswers.in)
+        }
 
         try{
             if(!lastQuestion){
                 const response = await insertCompilazione(compilazione).unwrap();
                 
-                if(response.data.insertCompilazione){
+                if(response?.data?.insertCompilazione){
                     
                     let newAnsweredQuestions = [];
                     answeredQuestions.forEach( qst => {
@@ -61,8 +72,9 @@ function Question({question,lastQuestion}){
                     givenAswers.forEach(answr => {
                         newGivenAnswers.push(answr)
                     })
-                    newGivenAnswers.push(idRisposta);
+                    newGivenAnswers.push(parseInt(idRisposta));
 
+                    // TODO: change here
                     dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,questions:newAnsweredQuestions,answers:newGivenAnswers}));
                     navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
                 }
@@ -73,7 +85,7 @@ function Question({question,lastQuestion}){
             else{
                 const response = await completeTest(compilazione).unwrap();
                 dispatch(setExamResults({dataTest:data,oraTest:ora,nomeTest:nome,results:response.data.completeTest}))
-                dispatch(endExam);
+                dispatch(endExam());
                 navigate(`/esame/${data}/${ora}/${nome}/summary`);
             }
         }
@@ -86,6 +98,7 @@ function Question({question,lastQuestion}){
             }
             else{
                 setErrorMessage("ERRORE LOGIN NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SITO");
+                console.log(exception)
             }
         }
     };
@@ -103,7 +116,7 @@ function Question({question,lastQuestion}){
                         (input,index)=>{
                             return(
                                 <div key={index}>
-                                    <input name="answer" type="radio" value={input.id} onChange={handleAnswer} ref={rispostaRef} required/>
+                                    <input defaultChecked={answeredQuestions.includes(question.nome) && givenAswers.includes(parseInt(input.id))} name="answer" type="radio" value={input.id} onChange={handleAnswer} onClick={handleAnswer} onInput = {handleAnswer} ref={rispostaRef} required/>
                                     <label htmlFor={input.testo}>{input.testo}</label>
                                 </div>
                             );

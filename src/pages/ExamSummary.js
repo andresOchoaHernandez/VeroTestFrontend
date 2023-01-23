@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { selectCurrentDataTestResult, selectCurrentNomeTestResult, selectCurrentOraTestResult, selectCurrentResults } from '../redux/ExamCompletionSlice';
+import { endExamResults, selectCurrentDataTestResult, selectCurrentNomeTestResult, selectCurrentOraTestResult, selectCurrentResults } from '../redux/ExamCompletionSlice';
 import Table from '../components/Table';
 import { selectCurrentScope } from '../redux/AuthenticationSlice';
 
@@ -15,6 +15,7 @@ function ExamSummary()
     const scope = useSelector(selectCurrentScope);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const columns = [
         {
@@ -30,6 +31,7 @@ function ExamSummary()
     risultati.forEach(element => {punteggioTotale += element.puntiRispostaData;});
 
     const goBackHome = () => {
+        dispatch(endExamResults());
         navigate(scope.includes("DOCENTE") ? "/home-docenti":"/home-studenti");
     }
 

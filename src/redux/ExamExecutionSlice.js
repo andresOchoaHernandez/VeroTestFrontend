@@ -6,24 +6,21 @@ export const ExamExecutionSlice = createSlice({
         dataTest : null,
         oraTest  : null,
         nomeTest : null,
-        questions: [],
-        answers  : []
+        qstAnsw  : []
     },
     reducers:{
         setExamExecution: (state,action) => {
-            const {dataTest,oraTest,nomeTest,questions,answers} = action.payload;
+            const {dataTest,oraTest,nomeTest,qstAnsw} = action.payload;
             state.dataTest  = dataTest;
             state.oraTest   = oraTest;
             state.nomeTest  = nomeTest;
-            state.questions = questions;
-            state.answers   = answers;
+            state.qstAnsw   = qstAnsw;
         },
         endExam: (state) => {
             state.dataTest  = null;
             state.oraTest   = null;
             state.nomeTest  = null;
-            state.questions = [];
-            state.answers   = [];
+            state.qstAnsw   = []
         }
     }
 });
@@ -33,5 +30,4 @@ export const {setExamExecution,endExam} = ExamExecutionSlice.actions;
 export const selectCurrentDataTest  = (state) => state.examExecution.dataTest
 export const selectCurrentOraTest   = (state) => state.examExecution.oraTest
 export const selectCurrentNomeTest  = (state) => state.examExecution.nomeTest
-export const selectCurrentquestions = (state) => state.examExecution.questions
-export const selectCurrentAnswers   = (state) => state.examExecution.answers
+export const selectCurrentqstAnsw   = (state) => state.examExecution.qstAnsw

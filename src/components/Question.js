@@ -4,8 +4,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUserId } from "../redux/AuthenticationSlice";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
-import { endExam, selectCurrentAnswers,selectCurrentquestions, setExamExecution } from "../redux/ExamExecutionSlice";
+import { endExam, selectCurrentqstAnsw, setExamExecution } from "../redux/ExamExecutionSlice";
 import { setExamResults } from "../redux/ExamCompletionSlice";
+
+function checkIfQuestionIsPresent(array,question){
+
+    let result = false;
+    
+    array.forEach(elem => {
+        if(elem.question.localeCompare(question) === 0){
+            result = true
+        }
+    })
+
+    return result;
+}
+
+function checkIfAnswerIsPresent(array,answer){
+    
+    let result = false;
+
+    array.forEach(elem => {
+        if(elem.answer === answer){
+            result = true;
+        }
+    })
+
+    return result;
+}
 
 function Question({question,lastQuestion}){
 
@@ -26,12 +52,11 @@ function Question({question,lastQuestion}){
 
     useEffect(()=> {rispostaRef?.current?.focus()},[]);
 
-    const handleAnswer = (event) => {setIdRisposta(event.target.value)}
+    const handleAnswer = (event) => {setIdRisposta(event.target.value)};
 
-    const answeredQuestions = useSelector(selectCurrentquestions);
-    const givenAswers       = useSelector(selectCurrentAnswers);
+    const qstAnsw = useSelector(selectCurrentqstAnsw);
 
-    console.log(idRisposta)
+    console.log(qstAnsw);
 
     const handleSubmit = async (event) => {
 
@@ -45,15 +70,29 @@ function Question({question,lastQuestion}){
             nomeDomanda:question.nome,
             idRisposta: parseInt(idRisposta)
         }
+
+        let indexOfprevAnswer;
         
-        if(answeredQuestions.includes(question.nome)){
+        if(checkIfQuestionIsPresent(qstAnsw,question.nome)){
+
+            let previousAnswer;
+
+            qstAnsw.forEach((elem,index)=> {
+                if(elem.question === question.nome){
+                    previousAnswer = elem.answer;
+                    indexOfprevAnswer = index;
+                }
+            })
+
+            console.log("HEY SONO QUI")
             
-            if(givenAswers.includes(parseInt(idRisposta))){
+            if(isNaN(parseInt(idRisposta)) || previousAnswer === parseInt(idRisposta)){
                 navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
                 return;
             }
 
-            givenAswers.splice(givenAswers.in)
+            console.log("non devo essere qui")
+            console.log(indexOfprevAnswer)
         }
 
         try{
@@ -61,21 +100,20 @@ function Question({question,lastQuestion}){
                 const response = await insertCompilazione(compilazione).unwrap();
                 
                 if(response?.data?.insertCompilazione){
-                    
-                    let newAnsweredQuestions = [];
-                    answeredQuestions.forEach( qst => {
-                        newAnsweredQuestions.push(qst);
-                    })
-                    newAnsweredQuestions.push(question.nome);
+                   
+                    let newQstAnsw = [];
 
-                    let newGivenAnswers = [];
-                    givenAswers.forEach(answr => {
-                        newGivenAnswers.push(answr)
-                    })
-                    newGivenAnswers.push(parseInt(idRisposta));
+                    qstAnsw.forEach(element => {
+                        newQstAnsw.push(element);
+                    });
 
-                    // TODO: change here
-                    dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,questions:newAnsweredQuestions,answers:newGivenAnswers}));
+                    if(indexOfprevAnswer !== undefined){
+                        newQstAnsw.splice(indexOfprevAnswer,1);
+                    }
+
+                    newQstAnsw.push({question:question.nome,answer:parseInt(idRisposta)})
+                   
+                    dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,qstAnsw:newQstAnsw}));
                     navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
                 }
                 else{
@@ -116,7 +154,7 @@ function Question({question,lastQuestion}){
                         (input,index)=>{
                             return(
                                 <div key={index}>
-                                    <input defaultChecked={answeredQuestions.includes(question.nome) && givenAswers.includes(parseInt(input.id))} name="answer" type="radio" value={input.id} onChange={handleAnswer} onClick={handleAnswer} onInput = {handleAnswer} ref={rispostaRef} required/>
+                                    <input defaultChecked={checkIfQuestionIsPresent(qstAnsw,question.nome) && checkIfAnswerIsPresent(qstAnsw,parseInt(input.id))} name="answer" type="radio" value={input.id} onChange={handleAnswer} onClick={handleAnswer} onInput = {handleAnswer} ref={rispostaRef} required/>
                                     <label htmlFor={input.testo}>{input.testo}</label>
                                 </div>
                             );

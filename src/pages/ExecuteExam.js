@@ -23,21 +23,17 @@ function ExecuteExam(){
     
                 if(response.data.allCompilazioniByUserOfExam.length !== 0){
                     
-                    const answeredQuestions = [];
-                    const givenAnswers = [];
+                    let qstAnsw = [];
                     response.data.allCompilazioniByUserOfExam.forEach((elem) => {
-                        answeredQuestions.push(elem.nomeDomanda);
-                        givenAnswers.push(elem.idRisposta);
+                        qstAnsw.push({question:elem.nomeDomanda,answer:elem.idRisposta})
                     });
-                    // TODO: change here
-                    dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,questions:answeredQuestions,answers:givenAnswers}));
+                    dispatch(setExamExecution({dataTest:data,oraTest:ora,nomeTest:nome,qstAnsw:qstAnsw}));
                 }
             }
             catch(error){
                 console.log(error);
             }
         }
-
         fetchCompilazioniFromUser();
     },[data,ora,nome,idUtente,getAllCompilazioniByUserOfExam,dispatch]);
 

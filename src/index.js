@@ -12,6 +12,7 @@ import ExecuteExam from './pages/ExecuteExam';
 import ExamSummary from './pages/ExamSummary';
 import { Provider } from 'react-redux';
 import { Store } from './redux/Store';
+import CreaEsame from './pages/CreaEsame';
 
 function App()
 {
@@ -28,6 +29,7 @@ function App()
 
             <Route element ={<ProtectedRoutes allowedScope="DOCENTE"/>}>
               <Route path="/home-docenti" element={<HomeDocenti/>} />
+              <Route path="/crea-esame" element={<CreaEsame/>} />
             </Route>
 
             <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>

@@ -1,23 +1,15 @@
 //import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetAllAnswersOfQuestionQuery,useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
+import { useCompleteTestMutation, useGetAllAnswersOfQuestionQuery,useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUserId } from "../redux/AuthenticationSlice";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
-import { selectCurrentAnswers, selectCurrentDataTest, selectCurrentNomeTest, selectCurrentOraTest, selectCurrentquestions, setExamExecution } from "../redux/ExamExecutionSlice";
+import { endExam, selectCurrentAnswers,selectCurrentquestions, setExamExecution } from "../redux/ExamExecutionSlice";
+import { setExamResults } from "../redux/ExamCompletionSlice";
 
 function Question({question,lastQuestion}){
 
-    /*=========*/
-    console.log("============= DEBUG ===============")
-    console.log(useSelector(selectCurrentDataTest))
-    console.log(useSelector(selectCurrentOraTest ))
-    console.log(useSelector(selectCurrentNomeTest))
-    console.log(useSelector(selectCurrentquestions))
-    console.log(useSelector(selectCurrentAnswers ))
-    console.log("==================================")
-    /*=========*/
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -26,6 +18,7 @@ function Question({question,lastQuestion}){
 
     const {data:answers,isLoading:isLoadingAnswers,isSuccess:isSuccessAnswers,isError:isErrorAnswers,error:errorAnswers} = useGetAllAnswersOfQuestionQuery(question.nome);
     const insertCompilazione = useInsertCompilazioneMutation()[0];
+    const completeTest = useCompleteTestMutation()[0];
 
     const [idRisposta, setIdRisposta] = useState('');
     const rispostaRef = useRef()
@@ -82,17 +75,27 @@ function Question({question,lastQuestion}){
                 else{
                     console.log("ERRORE NON GESTITO")
                 }
+            
+                navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
             }
             catch(error){
                 setErrorMessage(error.message);
                 console.log("ERRORE NON PREVISTO")
                 console.log(error)
             }
-
-            navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
         }
         else{
-            navigate(`/esame/${data}/${ora}/${nome}/summary`);
+            try{
+                const response = await completeTest(compilazione).unwrap();
+                
+                dispatch(setExamResults({dataTest:data,oraTest:ora,nomeTest:nome,results:response.data.completeTest}))
+                dispatch(endExam);
+
+                navigate(`/esame/${data}/${ora}/${nome}/summary`);
+            }
+            catch(error){
+                console.log(error);
+            }
         }
     };
 

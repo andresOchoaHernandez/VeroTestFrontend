@@ -26,7 +26,7 @@ export const ExamExecutionSlice = createSlice({
     }
 });
 
-export const {setExamExecution} = ExamExecutionSlice.actions;
+export const {setExamExecution,endExam} = ExamExecutionSlice.actions;
 
 export const selectCurrentDataTest  = (state) => state.examExecution.dataTest
 export const selectCurrentOraTest   = (state) => state.examExecution.oraTest

@@ -1,4 +1,4 @@
-import React                          from 'react';
+import React                        from 'react';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import ReactDOM                       from 'react-dom/client';
 import { createBrowserHistory }       from 'history';
@@ -41,4 +41,8 @@ function App()
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App/>);
+root.render(
+  <React.StrictMode>
+    <App/>
+  </React.StrictMode>
+);

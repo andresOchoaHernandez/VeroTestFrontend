@@ -56,8 +56,6 @@ function Question({question,lastQuestion}){
 
     const qstAnsw = useSelector(selectCurrentqstAnsw);
 
-    console.log(qstAnsw);
-
     const handleSubmit = async (event) => {
 
         event.preventDefault();
@@ -84,15 +82,10 @@ function Question({question,lastQuestion}){
                 }
             })
 
-            console.log("HEY SONO QUI")
-            
             if(isNaN(parseInt(idRisposta)) || previousAnswer === parseInt(idRisposta)){
                 navigate(`/esame/${data}/${ora}/${nome}/domanda/${parseInt(nquestion)+1}`);
                 return;
             }
-
-            console.log("non devo essere qui")
-            console.log(indexOfprevAnswer)
         }
 
         try{

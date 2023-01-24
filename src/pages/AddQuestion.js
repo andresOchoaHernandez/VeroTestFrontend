@@ -48,6 +48,18 @@ function AddQuestion(){
         setDomandaInput(formData);
     };
 
+    const removeQuestion = (indexDomanda) => {
+        const formData = [...domandaInput];
+        formData.splice(indexDomanda,1);
+        setDomandaInput(formData);
+    }
+
+    const removeAnswer = (indexDomanda,indexRisposta) => {
+        const formData = [...domandaInput];
+        formData[indexDomanda].risposte.splice(indexRisposta,1);
+        setDomandaInput(formData);
+    }
+
     return (
         <div>
             PAGINA PER L'AGGIUNTA DI DOMANDE
@@ -75,19 +87,21 @@ function AddQuestion(){
                                 domandaInput[indexDomande].risposte.map((risposte,indexRisposte)=>{
                                     return (
                                         <div key={indexRisposte}>
-                                            <p>==== RISPOSTA {indexRisposte} ====</p>
+                                            <p>==== RISPOSTA {indexRisposte} =====================================================</p>
                                             <label>Testo risposta:</label>
                                             <input name="testo" type="text" placeholder="Testo risposta" pattern="[a-zA-Z]*" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             <label>Punteggio risposta:</label>
                                             <input name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
-                                            <p>=================</p>
-                                            {domandaInput[indexDomande].risposte.length-1 === indexRisposte?(<button onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>):null}
+                                            {indexRisposte > 1 ?<button onClick={()=>removeAnswer(indexDomande,indexRisposte)} >RIMUOVI RISPOSTA</button>:null}
+                                            <p>=====================================================================================</p>
+                                            {domandaInput[indexDomande].risposte.length-1 === indexRisposte?<button onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>:null}
                                         </div>
                                     );
                                 })
                             }
+                            {indexDomande > 0 ? <button onClick={()=>removeQuestion(indexDomande)}>RIMUOVI DOMANDA</button>:null}
                             <p> ******************************************************************</p>
                         </div>
                     );

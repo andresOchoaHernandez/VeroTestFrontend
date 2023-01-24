@@ -32,11 +32,11 @@ function CreateExam(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        console.log(dataTest);
-        console.log(oraTest);
-        console.log(nomeTest);
-        console.log(ordineCasuale);
-        console.log(domandeConNumero);
+        //console.log(dataTest);
+        //console.log(oraTest);
+        //console.log(nomeTest);
+        //console.log(ordineCasuale);
+        //console.log(domandeConNumero);
 
         
         dispatch(setExam({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,ordineCasuale:ordineCasuale,domandeConNumero:domandeConNumero}));

@@ -11,15 +11,42 @@ function AddQuestion(){
     //const domandeConNumeroTest = useSelector(selectCurrentDomandeConNumeroTestCreation)
     //const domandeTest = useSelector(selectCurrentDomandeTestCreation)
 
-    const [domandaInput,setDomandaInput] = useState([{nome:'',testo:'',punti:0.0,ordineCasuale:false,risposteConNumero:false,risposte:[{testo:'',punteggio:0.0}]}]);
+    const [domandaInput,setDomandaInput] = useState([{nomeDomanda:'',testoDomanda:'',puntiDomanda:0.0,ordineCasualeDomanda:false,risposteConNumeroDomanda:false,risposte:[{testo:'',punteggio:0.0},{testo:'',punteggio:0.0}]}]);
     
     const handleSubmit = async(event)=>{
         event.preventDefault();
     };
 
-    const handleDomandaInput = (event,index) => {
+    const handleDomandaInput = (event,index,isCheckBox=false) => {
+        const formData = [...domandaInput];
 
+        if(isCheckBox){
+            formData[index][event.target.name] = event.target.checked;    
+        }
+        else{
+            formData[index][event.target.name] = event.target.value;
+        }
+        setDomandaInput(formData);
     }
+
+    const handleRispostaInput = (event,indexDomanda,indexRisposta) => {
+        const formData = [...domandaInput];
+        const updatedRisposte = [...formData[indexDomanda].risposte];
+        updatedRisposte[indexRisposta][event.target.name] = event.target.value;
+        formData[indexDomanda].risposte = updatedRisposte;
+        setDomandaInput(formData);
+    }
+
+    const addDomanda  = () => {
+        let newDomanda = {nomeDomanda:'',testoDomanda:'',puntiDomanda:0.0,ordineCasualeDomanda:false,risposteConNumeroDomanda:false,risposte:[{testo:'',punteggio:0.0},{testo:'',punteggio:0.0}]};
+        setDomandaInput([...domandaInput,newDomanda]);
+    };
+    const addRisposta = (index) => {
+        let newRisposta = {testo:'',punteggio:0.0};
+        const formData = [...domandaInput];
+        formData[index].risposte.push(newRisposta);
+        setDomandaInput(formData);
+    };
 
     return (
         <div>
@@ -39,10 +66,10 @@ function AddQuestion(){
                             <input name="puntiDomanda" type="number" min="0.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Voglio che le risposte a questa domanda siano mostrate in ordine casuale:</label>
-                            <input name="ordineCasualeDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande)} />
+                            <input name="ordineCasualeDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande,true)} />
                             <br/>
                             <label>Voglio che le risposte siano numerate:</label>
-                            <input name="risposteConNumeroDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande)} />
+                            <input name="risposteConNumeroDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande,true)} />
                             <br/>
                             {
                                 domandaInput[indexDomande].risposte.map((risposte,indexRisposte)=>{
@@ -50,13 +77,13 @@ function AddQuestion(){
                                         <div key={indexRisposte}>
                                             <p>==== RISPOSTA {indexRisposte} ====</p>
                                             <label>Testo risposta:</label>
-                                            <input type="text" placeholder="Testo risposta" pattern="[a-zA-Z]*" onChange={(event)=> handleDomandaInput(event,indexRisposte)} required/>
+                                            <input name="testo" type="text" placeholder="Testo risposta" pattern="[a-zA-Z]*" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             <label>Punteggio risposta:</label>
-                                            <input type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleDomandaInput(event,indexRisposte)} required/>
+                                            <input name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
-                                            <button> AGGIUNGI UN'ALTRA RISPOSTA </button>
                                             <p>=================</p>
+                                            {domandaInput[indexDomande].risposte.length-1 === indexRisposte?(<button onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>):null}
                                         </div>
                                     );
                                 })
@@ -65,7 +92,7 @@ function AddQuestion(){
                         </div>
                     );
                 })}
-                <button> AGGIUNGI UN'ALTRA DOMANDA </button>
+                <button onClick={addDomanda} > AGGIUNGI UN'ALTRA DOMANDA </button>
                 <br/>
                 <button type="submit"> SALVA TEST </button>
             </form>

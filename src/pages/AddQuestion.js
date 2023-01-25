@@ -1,25 +1,75 @@
 import { useState } from "react"
-//import { useSelector } from "react-redux"
-//import { selectCurrentDataTestCreation,selectCurrentOraTestCreation,selectCurrentNomeTestCreation,selectCurrentOrdineCasualeTestCreation,selectCurrentDomandeConNumeroTestCreation,selectCurrentDomandeTestCreation} from "../redux/CreateExamSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { endExamCreation } from "../redux/CreateExamSlice"
+import { useNavigate } from "react-router-dom"
+import { selectCurrentDataTestCreation,selectCurrentOraTestCreation,selectCurrentNomeTestCreation,selectCurrentOrdineCasualeTestCreation,selectCurrentDomandeConNumeroTestCreation} from "../redux/CreateExamSlice"
+import { useConnectDomandaToTestMutation, useCreateDomandaMutation, useCreateRispostaMutation, useCreateTestMutation } from "../redux/VeroTestApiExams"
 
 function AddQuestion(){
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const createTest = useCreateTestMutation()[0]
+    const createDomanda = useCreateDomandaMutation()[0]
+    const createRisposta = useCreateRispostaMutation()[0]
+    const connectDomandaToTest = useConnectDomandaToTestMutation()[0]
     
-    //const dataTest = useSelector(selectCurrentDataTestCreation)
-    //const oraTest = useSelector(selectCurrentOraTestCreation)  
-    //const nomeTest = useSelector(selectCurrentNomeTestCreation)  
-    //const ordineCasualeTest = useSelector(selectCurrentOrdineCasualeTestCreation)
-    //const domandeConNumeroTest = useSelector(selectCurrentDomandeConNumeroTestCreation)
-    //const domandeTest = useSelector(selectCurrentDomandeTestCreation)
+    const dataTest = useSelector(selectCurrentDataTestCreation)
+    const oraTest = useSelector(selectCurrentOraTestCreation)  
+    const nomeTest = useSelector(selectCurrentNomeTestCreation)  
+    const ordineCasualeTest = useSelector(selectCurrentOrdineCasualeTestCreation)
+    const domandeConNumeroTest = useSelector(selectCurrentDomandeConNumeroTestCreation)
 
     const [domandaInput,setDomandaInput] = useState([{nomeDomanda:'',testoDomanda:'',puntiDomanda:0.0,ordineCasualeDomanda:false,risposteConNumeroDomanda:false,risposte:[{testo:'',punteggio:0.0},{testo:'',punteggio:0.0}]}]);
-    
+    const [error,setError] = useState('');
+
+
     const handleSubmit = async(event)=>{
         event.preventDefault();
+
+        try{
+            const testCreated = await createTest({data:dataTest,ora:oraTest,nome:nomeTest,ordineCasuale:ordineCasualeTest,domandeConNumero:domandeConNumeroTest}).unwrap();
+            
+            if(!testCreated?.data?.createTest){
+                setError('Non è stato possibile salvare il test')
+            }
+
+            for await (const domanda of domandaInput){
+                const {nomeDomanda,testoDomanda,puntiDomanda,ordineCasualeDomanda,risposteConNumeroDomanda,risposte} = {...domanda};
+                const domandaCreated =  await createDomanda({nome:nomeDomanda,testo:testoDomanda,punti:puntiDomanda,ordineCasuale:ordineCasualeDomanda,risposteConNumero:risposteConNumeroDomanda}).unwrap();
+
+                if(!domandaCreated?.data?.createDomanda){
+                    setError('Non è stato possibile salvare la domanda')
+                }
+
+                for await(const risposta of risposte){
+                    const {testo,punteggio} = {...risposta};
+                    const rispostaCreated = await createRisposta({testo:testo,punteggio:punteggio,domanda:nomeDomanda}).unwrap();
+
+                    if(!rispostaCreated?.data?.createRisposta){
+                        setError('Non è stato possibile salvare la risposta ')
+                    }
+                }
+                
+                const connectedDomandaWithtest = await connectDomandaToTest({domanda:nomeDomanda,dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest}).unwrap();
+            
+                if(!connectedDomandaWithtest?.data?.connectDomandaToTest){
+                    setError('Non è stato possibile collegare la domanda al test')
+                }
+            }            
+        }
+        catch(error){
+            setError("È accaduto un errore imprevisto, contattare l'amministratore ")
+            console.log(error)
+        }
+
+        dispatch(endExamCreation());
+        navigate("/home-docenti");
     };
 
     const handleDomandaInput = (event,index,isCheckBox=false) => {
         const formData = [...domandaInput];
-
         if(isCheckBox){
             formData[index][event.target.name] = event.target.checked;    
         }
@@ -69,10 +119,10 @@ function AddQuestion(){
                         <div key={indexDomande}>
                             <p> ********************* DOMANDA {indexDomande} *********************</p>
                             <label>Nome domanda:</label>
-                            <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[a-zA-Z]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[a-zA-Z\s]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Testo domanda:</label>
-                            <input name="testoDomanda" type="text" placeholder="Testo domanda" pattern="[a-zA-Z]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input name="testoDomanda" type="text" placeholder="Testo domanda" onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Punti domanda:</label>
                             <input name="puntiDomanda" type="number" min="0.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
@@ -89,7 +139,7 @@ function AddQuestion(){
                                         <div key={indexRisposte}>
                                             <p>==== RISPOSTA {indexRisposte} =====================================================</p>
                                             <label>Testo risposta:</label>
-                                            <input name="testo" type="text" placeholder="Testo risposta" pattern="[a-zA-Z]*" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
+                                            <input name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             <label>Punteggio risposta:</label>
                                             <input name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
@@ -106,6 +156,7 @@ function AddQuestion(){
                         </div>
                     );
                 })}
+                <p className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>
                 <button onClick={addDomanda} > AGGIUNGI UN'ALTRA DOMANDA </button>
                 <br/>
                 <button type="submit"> SALVA TEST </button>

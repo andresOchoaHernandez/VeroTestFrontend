@@ -7,8 +7,7 @@ export const CreateExamSlice = createSlice({
         oraTest  : null,
         nomeTest : null,
         ordineCasuale: false,
-        domandeConNumero: false,
-        domande: []
+        domandeConNumero: false
     },
     reducers:{
         setExam: (state,action) => {
@@ -19,21 +18,12 @@ export const CreateExamSlice = createSlice({
             state.ordineCasuale = ordineCasuale;
             state.domandeConNumero = domandeConNumero;
         },
-        addQuestion: (state,action) => {
-            const domande = action.payload;
-            state.domande.push(domande);
-        },
-        deleteQuestion:(state,action)=>{
-            const index = action.payload;
-            state.domande.splice(index,1);
-        },
         endExamCreation: (state) => {     
             state.dataTest = null;
             state.oraTest  = null;
             state.nomeTest = null;
             state.ordineCasuale = false;
             state.domandeConNumero = false;
-            state.domande=[];
         }
     }
 });
@@ -45,4 +35,3 @@ export const selectCurrentOraTestCreation   = (state) => state.createExam.oraTes
 export const selectCurrentNomeTestCreation  = (state) => state.createExam.nomeTest;
 export const selectCurrentOrdineCasualeTestCreation = (state) => state.createExam.ordineCasuale;
 export const selectCurrentDomandeConNumeroTestCreation = (state) => state.createExam.domandeConNumero;
-export const selectCurrentDomandeTestCreation = (state) => state.createExam.domande;

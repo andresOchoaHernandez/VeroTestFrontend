@@ -121,6 +121,67 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                 })
             })
         }),
+        createTest: builder.mutation({
+            query: (testInput)=>({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query:`
+                        mutation createTest($input:testInput){
+                            createTest(input:$input)
+                    }`,
+                    variables:{
+                        input:testInput
+                    }
+                })         
+            })
+        }),
+        createDomanda: builder.mutation({
+            query: (domandaInput)=>({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query:`
+                        mutation createDomanda($input:domandaInput){
+                            createDomanda(input:$input)
+                    }`,
+                    variables:{
+                        input:domandaInput
+                    }
+                })         
+            })
+        }),
+        createRisposta: builder.mutation({
+            query: (rispostaInput)=>({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query:`
+                        mutation createRisposta($input:rispostaInput){
+                            createRisposta(input:$input)
+                    }`,
+                    variables:{
+                        input:rispostaInput
+                    }
+                })         
+            })
+        }),
+        connectDomandaToTest: builder.mutation({
+            query: (intestInput)=>({
+                url: '/graphql',
+                method: 'POST',
+                body: JSON.stringify({
+                    query:`
+                        mutation connectDomandaToTest($input:intestInput){
+                            connectDomandaToTest(input:$input)
+                    }`,
+                    variables:{
+                        input:intestInput
+                    }
+                })         
+            })
+        }),
+
     })
 });
 
@@ -130,3 +191,7 @@ export const { useGetAllAnswersOfQuestionQuery } = VeroTestApiExams;
 export const { useInsertCompilazioneMutation } = VeroTestApiExams;
 export const { useCompleteTestMutation} = VeroTestApiExams;
 export const { useAllCompilazioniByUserOfExamMutation} = VeroTestApiExams;
+export const {useCreateTestMutation} = VeroTestApiExams;
+export const {useCreateDomandaMutation} = VeroTestApiExams;
+export const {useCreateRispostaMutation} = VeroTestApiExams;
+export const {useConnectDomandaToTestMutation} = VeroTestApiExams;

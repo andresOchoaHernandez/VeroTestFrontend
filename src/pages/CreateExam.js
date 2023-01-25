@@ -46,7 +46,7 @@ function CreateExam(){
                 <input id="oraEsame" type="time" onChange={handleOraInput} required/>
                 <br/>
                 <label htmlFor="nomeEsame">Nome esame : </label>
-                <input id="nomeEsame" type="text" pattern="[a-zA-Z]*" onChange={handleNomeInput} placeholder="Nome esame" required/>
+                <input id="nomeEsame" type="text" pattern="[a-zA-Z\s]*" onChange={handleNomeInput} placeholder="Nome esame" required/>
                 <br/>
                 <label htmlFor="ordineCasuale">Voglio che le domande siano mostrate in ordine casuale:</label>
                 <input id="ordineCasuale" type="checkbox" onChange={handleOCInput}/>         

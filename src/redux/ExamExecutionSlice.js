@@ -6,7 +6,8 @@ export const ExamExecutionSlice = createSlice({
         data: null,
         ora:null,
         nome:null,
-        domandeCompilate:null
+        domandeCompilate:null,
+        isExamInProgress:false
     },
     reducers:{
         setExamExecution: (state,action) => {
@@ -15,6 +16,7 @@ export const ExamExecutionSlice = createSlice({
             state.ora = ora;
             state.nome = nome;
             state.domandeCompilate = domandeCompilate;
+            state.isExamInProgress=true;
         },
         changeAnswerToCompiledQuestion: (state,action) => {
             const {nomeDomanda,nuovaRisposta} = action.payload;
@@ -33,6 +35,7 @@ export const ExamExecutionSlice = createSlice({
             state.ora = null;
             state.nome = null;
             state.domandeCompilate = null;
+            state.isExamInProgress = false;
         }
     }
 });
@@ -43,3 +46,4 @@ export const dataExecutionExam = (state) => state.examexecution.data;
 export const oraExecutionExam = (state) => state.examexecution.ora;
 export const nomeExecutionExam = (state) => state.examexecution.nome;
 export const domandeCompilateExecutionExam = (state) => state.examexecution.domandeCompilate;
+export const isExamInProgress = (state) => state.examexecution.isExamInProgress;

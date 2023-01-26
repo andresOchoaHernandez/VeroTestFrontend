@@ -116,7 +116,7 @@ function AddQuestion(){
             <form autoComplete="off" onSubmit={handleSubmit}>
                 {domandaInput.map((domande,indexDomande)=>{
                     return(
-                        <div key={indexDomande}>
+                        <div key={domande.nomeDomanda + indexDomande}>
                             <p> ********************* DOMANDA {indexDomande} *********************</p>
                             <label>Nome domanda:</label>
                             <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[a-zA-Z\s]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
@@ -136,7 +136,7 @@ function AddQuestion(){
                             {
                                 domandaInput[indexDomande].risposte.map((risposte,indexRisposte)=>{
                                     return (
-                                        <div key={indexRisposte}>
+                                        <div key={risposte.testo + indexRisposte}>
                                             <p>==== RISPOSTA {indexRisposte} =====================================================</p>
                                             <label>Testo risposta:</label>
                                             <input name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>

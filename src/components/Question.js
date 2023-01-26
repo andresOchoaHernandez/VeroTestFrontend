@@ -27,6 +27,17 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
         return result;       
     }
 
+    /*
+    function checkIfRispostaIsValid(idRisposta){
+        let result = false;
+        domanda.risposte.forEach((input,value)=>{
+            if(parseInt(input.id) === idRisposta){
+                result = true;
+            }
+        })
+        return result;
+    }*/
+
     const handleSubmit = async(event)=>{
         event.preventDefault();
 
@@ -40,6 +51,12 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             nomeDomanda:domanda.nome,
             idRisposta: parseInt(selectedAnswersId)
         }
+
+        /*
+        if(!checkIfRispostaIsValid(parseInt(selectedAnswersId))){
+            console.log("LA RISPOSTA RILEVATA NON È UNA RISPOSTA VALIDA A QUESTA DOMANDA")
+            return;
+        }*/
 
         if(checkIfQuestionIsAnswered(compilazione.nomeDomanda)){
 
@@ -102,10 +119,10 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             <div id="testoDomanda">
                 <p>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</p>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
                 {domanda.risposte.map((input,index)=>{
                     return (
-                        <div key={index}>
+                        <div key={domanda.nome + index}>
                             <input name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
                             <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
                         </div>

@@ -1,33 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const ExamExecutionSlice = createSlice({
-    name : "examExecution",
+    name : "examexecution",
     initialState: {
-        dataTest : null,
-        oraTest  : null,
-        nomeTest : null,
-        qstAnsw  : []
+        data: null,
+        ora:null,
+        nome:null,
+        domandeCompilate:null
     },
     reducers:{
         setExamExecution: (state,action) => {
-            const {dataTest,oraTest,nomeTest,qstAnsw} = action.payload;
-            state.dataTest  = dataTest;
-            state.oraTest   = oraTest;
-            state.nomeTest  = nomeTest;
-            state.qstAnsw   = qstAnsw;
+            const {data,ora,nome,domandeCompilate} = action.payload;
+            state.data = data;
+            state.ora = ora;
+            state.nome = nome;
+            state.domandeCompilate = domandeCompilate;
         },
-        endExam: (state) => {
-            state.dataTest  = null;
-            state.oraTest   = null;
-            state.nomeTest  = null;
-            state.qstAnsw   = []
+        changeAnswerToCompiledQuestion: (state,action) => {
+            const {nomeDomanda,nuovaRisposta} = action.payload;
+            state.domandeCompilate.forEach((input)=>{
+                if(nomeDomanda === input.nomeDomanda){
+                    input.risposta = nuovaRisposta;
+                }
+            });
+        },
+        addCompiledQuestion: (state,action) =>{
+            const {nomeDomanda,risposta} = action.payload;
+            state.domandeCompilate.push({nomeDomanda:nomeDomanda,risposta:risposta});
+        },
+        endExamExecution: (state) => {
+            state.data = null;
+            state.ora = null;
+            state.nome = null;
+            state.domandeCompilate = null;
         }
     }
 });
 
-export const {setExamExecution,endExam} = ExamExecutionSlice.actions;
+export const {setExamExecution,changeAnswerToCompiledQuestion,addCompiledQuestion,endExamExecution} = ExamExecutionSlice.actions;
 
-export const selectCurrentDataTest  = (state) => state.examExecution.dataTest
-export const selectCurrentOraTest   = (state) => state.examExecution.oraTest
-export const selectCurrentNomeTest  = (state) => state.examExecution.nomeTest
-export const selectCurrentqstAnsw   = (state) => state.examExecution.qstAnsw
+export const dataExecutionExam = (state) => state.examexecution.data;
+export const oraExecutionExam = (state) => state.examexecution.ora;
+export const nomeExecutionExam = (state) => state.examexecution.nome;
+export const domandeCompilateExecutionExam = (state) => state.examexecution.domandeCompilate;

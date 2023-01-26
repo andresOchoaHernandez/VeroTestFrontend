@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { endExamCreation, setExam } from "../redux/CreateExamSlice";
+import { endExamCreation, setExamCreation } from "../redux/CreateExamSlice";
 
 function CreateExam(){
     
@@ -31,7 +31,7 @@ function CreateExam(){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        dispatch(setExam({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,ordineCasuale:ordineCasuale,domandeConNumero:domandeConNumero}));
+        dispatch(setExamCreation({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,ordineCasuale:ordineCasuale,domandeConNumero:domandeConNumero}));
         navigate(`/crea-esame/${nomeTest}/aggiungi-domande`)
     }
 

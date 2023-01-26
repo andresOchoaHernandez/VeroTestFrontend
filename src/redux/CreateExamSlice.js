@@ -10,7 +10,7 @@ export const CreateExamSlice = createSlice({
         domandeConNumero: false
     },
     reducers:{
-        setExam: (state,action) => {
+        setExamCreation: (state,action) => {
             const {dataTest,oraTest,nomeTest,ordineCasuale,domandeConNumero} = action.payload;
             state.dataTest  = dataTest;
             state.oraTest   = oraTest;
@@ -28,7 +28,7 @@ export const CreateExamSlice = createSlice({
     }
 });
 
-export const {setExam,addQuestion,endExamCreation} = CreateExamSlice.actions;
+export const {setExamCreation,endExamCreation} = CreateExamSlice.actions;
 
 export const selectCurrentDataTestCreation  = (state) => state.createExam.dataTest;
 export const selectCurrentOraTestCreation   = (state) => state.createExam.oraTest;

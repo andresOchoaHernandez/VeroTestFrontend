@@ -35,7 +35,7 @@ function App()
             </Route>
 
             <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>
-              <Route path="/esame/:data/:ora/:nome/domanda/:nquestion" element={<ExecuteExam/>}/>
+              <Route path="/esame/:data/:ora/:nome/:nquestion" element={<ExecuteExam/>}/>
               <Route path="/esame/:data/:ora/:nome/summary" element={<ExamSummary/>}/>
             <Route/>
           </Routes>
@@ -45,8 +45,4 @@ function App()
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App/>
-  </React.StrictMode>
-);
+root.render(<App/>);

@@ -20,7 +20,30 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                 })
             })
         }),
-        getAllQuestionsOfTest: builder.query({
+        getExam: builder.mutation({
+            query: ({data,ora,nome}) => ({
+                url: '/graphql',
+                method:'POST',
+                body: JSON.stringify({
+                    query: `                 
+                        query testByDateHourAndName($data:String!,$hour:String!,$nome:String!){
+                            testByDateHourAndName(data:$data,hour:$hour,nome:$nome){
+                                data,
+                                ora,
+                                nome,
+                                ordineCasuale,
+                                domandeConNumero
+                            }
+                    }`,
+                    variables:{
+                        data:data,
+                        hour:ora,
+                        nome:nome
+                    }
+                })
+            })
+        }),
+        getAllQuestionsOfTest: builder.mutation({
             query: ({data,ora,nome}) => ({
                 url: '/graphql',
                 method: 'POST',
@@ -43,7 +66,7 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                 })
             })
         }),
-        getAllAnswersOfQuestion: builder.query({
+        getAllAnswersOfQuestion: builder.mutation({
             query: (question) => ({
                 url: '/graphql',
                 method: 'POST',
@@ -186,8 +209,10 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
 });
 
 export const { useGetAllExamsQuery } = VeroTestApiExams;
-export const { useGetAllQuestionsOfTestQuery } = VeroTestApiExams;
-export const { useGetAllAnswersOfQuestionQuery } = VeroTestApiExams;
+
+export const { useGetExamMutation } = VeroTestApiExams;
+export const { useGetAllQuestionsOfTestMutation } = VeroTestApiExams;
+export const { useGetAllAnswersOfQuestionMutation } = VeroTestApiExams;
 export const { useInsertCompilazioneMutation } = VeroTestApiExams;
 export const { useCompleteTestMutation} = VeroTestApiExams;
 export const { useAllCompilazioniByUserOfExamMutation} = VeroTestApiExams;

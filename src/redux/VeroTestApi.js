@@ -13,8 +13,8 @@ const baseQuery = fetchBaseQuery({
 });
 
 const veroTestApiQuery = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions)
-    return result
+    let result = await baseQuery(args, api, extraOptions);
+    return result;
 };
 
 export const VeroTestApi = createApi({

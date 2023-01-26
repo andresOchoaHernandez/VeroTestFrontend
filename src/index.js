@@ -34,10 +34,10 @@ function App()
               <Route path="/crea-esame/:nome/aggiungi-domande" element={<AddQuestion/>}/>
             </Route>
 
-            <Route element ={<ProtectedRoutes allowedScope="STUDENTE,DOCENTE"/>}></Route>
+            <Route element ={<ProtectedRoutes allowedScope={"STUDENTE DOCENTE"}/>}>
               <Route path="/esame/:data/:ora/:nome/:nquestion" element={<ExecuteExam/>}/>
               <Route path="/esame/:data/:ora/:nome/summary" element={<ExamSummary/>}/>
-            <Route/>
+            </Route>
           </Routes>
       </BrowserRouter>
     </Provider>

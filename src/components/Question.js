@@ -6,36 +6,16 @@ import { addCompiledQuestion, changeAnswerToCompiledQuestion, endExamExecution }
 import { endExamPresentation } from "../redux/ExamPresentationSlice";
 import { useCompleteTestMutation, useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
 
-function Question({
-    userId,
-    dataTest,
-    oraTest,
-    nomeTest,
-    domandeConNumeroEsame,
-    domanda,
-    nquestion,
-    isLastQuestion,
-    domandeCompilate
-})
+function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [selectedAnswersId,setAnswer] = useState(undefined)
-    const handleSelectedAnswer = (event) =>{ setAnswer(event.target.value) }
+    const [selectedAnswersId,setAnswer] = useState('')
+    const handleSelectedAnswer = (event) =>{setAnswer(event.target.value)}
 
     const insertCompilazione = useInsertCompilazioneMutation()[0];
     const completeTest = useCompleteTestMutation()[0];
-
-    function checkIfanswered(nomeDomanda,idRisposta){
-        let result = false;
-        domandeCompilate.forEach((input)=>{
-            if(input.nomeDomanda === nomeDomanda && input.risposta === parseInt(idRisposta)){
-                result = true;
-            }
-        })
-        return result;
-    }
 
     function checkIfQuestionIsAnswered(nomeDomanda){
         let result = false;
@@ -117,19 +97,17 @@ function Question({
         }
     }
 
-
     return (
-        <div id="domandaContainer">
+        <div>
             <div id="testoDomanda">
                 <p>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</p>
             </div>
             <form onSubmit={handleSubmit}>
                 {domanda.risposte.map((input,index)=>{
-
                     return (
                         <div key={index}>
-                            <input defaultChecked={checkIfanswered(domanda.nome,input.id)} id={domanda.nome + input.id} onChange={handleSelectedAnswer} name="answer" type="radio" value={input.id} required/>
-                            <label htmlFor={domanda.nome + input.id} >{ domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
+                            <input name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
+                            <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
                         </div>
                     );
                 })}

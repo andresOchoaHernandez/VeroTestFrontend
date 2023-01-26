@@ -17,6 +17,16 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
     const insertCompilazione = useInsertCompilazioneMutation()[0];
     const completeTest = useCompleteTestMutation()[0];
 
+    function checkIfanswered(nomeDomanda,idRisposta){
+        let result = false;
+        domandeCompilate.forEach((input)=>{
+            if(input.nomeDomanda === nomeDomanda && input.risposta === parseInt(idRisposta)){
+                result = true;
+            }
+        })
+        return result;
+    }
+
     function checkIfQuestionIsAnswered(nomeDomanda){
         let result = false;
         domandeCompilate.forEach((input)=>{
@@ -26,17 +36,6 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
         })
         return result;       
     }
-
-    /*
-    function checkIfRispostaIsValid(idRisposta){
-        let result = false;
-        domanda.risposte.forEach((input,value)=>{
-            if(parseInt(input.id) === idRisposta){
-                result = true;
-            }
-        })
-        return result;
-    }*/
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
@@ -51,12 +50,6 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             nomeDomanda:domanda.nome,
             idRisposta: parseInt(selectedAnswersId)
         }
-
-        /*
-        if(!checkIfRispostaIsValid(parseInt(selectedAnswersId))){
-            console.log("LA RISPOSTA RILEVATA NON È UNA RISPOSTA VALIDA A QUESTA DOMANDA")
-            return;
-        }*/
 
         if(checkIfQuestionIsAnswered(compilazione.nomeDomanda)){
 
@@ -75,9 +68,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 else if(pressedButton === "domPrec"){
                     navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)-1}`);
                 }
-                return;
             }
-
             dispatch(changeAnswerToCompiledQuestion({nomeDomanda:compilazione.nomeDomanda,nuovaRisposta:compilazione.idRisposta}))
         }
         else{
@@ -123,7 +114,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 {domanda.risposte.map((input,index)=>{
                     return (
                         <div key={domanda.nome + index}>
-                            <input name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
+                            <input defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
                             <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
                         </div>
                     );

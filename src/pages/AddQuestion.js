@@ -22,45 +22,78 @@ function AddQuestion(){
     const domandeConNumeroTest = useSelector(selectCurrentDomandeConNumeroTestCreation)
 
     const [domandaInput,setDomandaInput] = useState([{nomeDomanda:'',testoDomanda:'',puntiDomanda:0.0,ordineCasualeDomanda:false,risposteConNumeroDomanda:false,risposte:[{testo:'',punteggio:0.0},{testo:'',punteggio:0.0}]}]);
-    const [error,setError] = useState('');
 
+    const validateInput = () => {
+        
+        if(domandaInput.length < 1) {
+            alert("Deve essere fornita almeno una domanda per creare il test");
+            return false;
+        }
+
+        for(const domanda of domandaInput){
+            if(domanda.risposte.length < 2){
+                alert("Ogni domanda deve avere almeno due risposte")
+                return false;
+            }
+            
+            /* CHECK FOR AT LEAST ONE CORRECT ANSWER (1.0 POINTS) */
+            let correctAnswer = [];
+
+            for(const risposta of domanda.risposte){
+                if(parseFloat(risposta.punteggio) === 1.0){
+                    correctAnswer.push(risposta);
+                }
+            }
+
+            if(correctAnswer.length !== 1){
+                alert("Bisogna inserire una ed una sola risposta giusta (punteggio 1.0) per ogni domanda")
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
 
+        if (!validateInput()){
+            return;
+        }
+
         try{
-            const testCreated = await createTest({data:dataTest,ora:oraTest,nome:nomeTest,ordineCasuale:ordineCasualeTest,domandeConNumero:domandeConNumeroTest}).unwrap();
+            const {data:{createTest:testCreated}} = await createTest({data:dataTest,ora:oraTest,nome:nomeTest,ordineCasuale:ordineCasualeTest,domandeConNumero:domandeConNumeroTest}).unwrap();
             
-            if(!testCreated?.data?.createTest){
-                setError('Non è stato possibile salvare il test')
+            if(!testCreated){
+                alert('Non è stato possibile salvare il test')
             }
 
             for await (const domanda of domandaInput){
                 const {nomeDomanda,testoDomanda,puntiDomanda,ordineCasualeDomanda,risposteConNumeroDomanda,risposte} = {...domanda};
-                const domandaCreated =  await createDomanda({nome:nomeDomanda,testo:testoDomanda,punti:puntiDomanda,ordineCasuale:ordineCasualeDomanda,risposteConNumero:risposteConNumeroDomanda}).unwrap();
+                const {data:{createDomanda:domandaCreated}} =  await createDomanda({nome:nomeDomanda,testo:testoDomanda,punti:puntiDomanda,ordineCasuale:ordineCasualeDomanda,risposteConNumero:risposteConNumeroDomanda}).unwrap();
 
-                if(!domandaCreated?.data?.createDomanda){
-                    setError('Non è stato possibile salvare la domanda')
+                if(!domandaCreated){
+                    alert('Non è stato possibile salvare la domanda')
                 }
 
                 for await(const risposta of risposte){
                     const {testo,punteggio} = {...risposta};
-                    const rispostaCreated = await createRisposta({testo:testo,punteggio:punteggio,domanda:nomeDomanda}).unwrap();
+                    const {data:{createRisposta:rispostaCreated}} = await createRisposta({testo:testo,punteggio:punteggio,domanda:nomeDomanda}).unwrap();
 
-                    if(!rispostaCreated?.data?.createRisposta){
-                        setError('Non è stato possibile salvare la risposta ')
+                    if(!rispostaCreated){
+                        alert('Non è stato possibile salvare la risposta ')
                     }
                 }
                 
-                const connectedDomandaWithtest = await connectDomandaToTest({domanda:nomeDomanda,dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest}).unwrap();
+                const {data:{connectDomandaToTest:connectedDomandaWithtest}} = await connectDomandaToTest({domanda:nomeDomanda,dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest}).unwrap();
             
-                if(!connectedDomandaWithtest?.data?.connectDomandaToTest){
-                    setError('Non è stato possibile collegare la domanda al test')
+                if(!connectedDomandaWithtest){
+                    alert('Non è stato possibile collegare la domanda al test')
                 }
             }            
         }
         catch(error){
-            setError("È accaduto un errore imprevisto, contattare l'amministratore ")
+            alert("È accaduto un errore imprevisto, contattare l'amministratore ")
             console.log(error)
         }
 
@@ -116,16 +149,16 @@ function AddQuestion(){
             <form autoComplete="off" onSubmit={handleSubmit}>
                 {domandaInput.map((domande,indexDomande)=>{
                     return(
-                        <div key={domande.nomeDomanda + indexDomande}>
+                        <div key={indexDomande}>
                             <p> ********************* DOMANDA {indexDomande} *********************</p>
                             <label>Nome domanda:</label>
-                            <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[a-zA-Z\s]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[\w\s\d?.,]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Testo domanda:</label>
                             <input name="testoDomanda" type="text" placeholder="Testo domanda" onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Punti domanda:</label>
-                            <input name="puntiDomanda" type="number" min="0.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input name="puntiDomanda" type="number" min="1.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Voglio che le risposte a questa domanda siano mostrate in ordine casuale:</label>
                             <input name="ordineCasualeDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande,true)} />
@@ -136,7 +169,7 @@ function AddQuestion(){
                             {
                                 domandaInput[indexDomande].risposte.map((risposte,indexRisposte)=>{
                                     return (
-                                        <div key={risposte.testo + indexRisposte}>
+                                        <div key={indexRisposte}>
                                             <p>==== RISPOSTA {indexRisposte} =====================================================</p>
                                             <label>Testo risposta:</label>
                                             <input name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
@@ -156,7 +189,6 @@ function AddQuestion(){
                         </div>
                     );
                 })}
-                <p className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>
                 <button onClick={addDomanda} > AGGIUNGI UN'ALTRA DOMANDA </button>
                 <br/>
                 <button type="submit"> SALVA TEST </button>

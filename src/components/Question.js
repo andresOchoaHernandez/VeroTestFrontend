@@ -8,6 +8,12 @@ import { useCompleteTestMutation, useInsertCompilazioneMutation } from "../redux
 
 function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
+    const eligibleAnswerId = [];
+
+    for(const risposta of domanda.risposte){
+        eligibleAnswerId.push(parseInt(risposta.id));
+    }
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,6 +43,14 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
         return result;       
     }
 
+    const concludiEsame = async (compilazione) => {
+        const {data:{completeTest:results}} = await completeTest(compilazione).unwrap();
+        dispatch(setExamResults({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,results:results}))
+        dispatch(endExamExecution());
+        dispatch(endExamPresentation());
+        navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/summary`);
+    }
+
     const handleSubmit = async(event)=>{
         event.preventDefault();
 
@@ -51,6 +65,26 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             idRisposta: parseInt(selectedAnswersId)
         }
 
+        if(isNaN(compilazione.idRisposta)){ 
+
+            if(pressedButton === "domSuc"){
+                navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)+1}`);
+            }
+            else if(pressedButton === "domPrec"){
+                navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)-1}`);
+            }
+            else if(pressedButton === "concludi"){
+                domandeCompilate.forEach((input,index)=>{
+                    if(input.nomeDomanda === compilazione.nomeDomanda){
+                        compilazione.idRisposta = input.risposta;
+                    }
+                });
+                concludiEsame(compilazione);
+            }
+
+            return;
+        }
+
         if(checkIfQuestionIsAnswered(compilazione.nomeDomanda)){
 
             let prevAnswer;
@@ -60,13 +94,37 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 }
             });
 
-            if(isNaN(compilazione.idRisposta) || compilazione.idRisposta === prevAnswer ){ 
+            if(compilazione.idRisposta === prevAnswer ){ 
 
                 if(pressedButton === "domSuc"){
                     navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)+1}`);
                 }
                 else if(pressedButton === "domPrec"){
                     navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)-1}`);
+                }
+                else if(pressedButton === "concludi"){
+                    concludiEsame(compilazione);
+                }
+                return;
+            }
+            else{
+                /* side effect => answers of unrelated questions are registered*/
+                if(!eligibleAnswerId.includes(compilazione.idRisposta)){
+                    if(pressedButton === "domSuc"){
+                        navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)+1}`);
+                    }
+                    else if(pressedButton === "domPrec"){
+                        navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)-1}`);
+                    }
+                    else if(pressedButton === "concludi"){
+                        domandeCompilate.forEach((input,index)=>{
+                            if(input.nomeDomanda === compilazione.nomeDomanda){
+                                compilazione.idRisposta = input.risposta;
+                            }
+                        });
+                        concludiEsame(compilazione);
+                    }
+                    return;
                 }
             }
             dispatch(changeAnswerToCompiledQuestion({nomeDomanda:compilazione.nomeDomanda,nuovaRisposta:compilazione.idRisposta}))
@@ -90,11 +148,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 }
             }
             else if(pressedButton === "concludi"){
-                const {data:{completeTest:results}} = await completeTest(compilazione).unwrap();
-                dispatch(setExamResults({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,results:results}))
-                dispatch(endExamExecution());
-                dispatch(endExamPresentation());
-                navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/summary`);
+                concludiEsame(compilazione);
             }
             else{
                 console.log("ERRORE IMPREVISTO");

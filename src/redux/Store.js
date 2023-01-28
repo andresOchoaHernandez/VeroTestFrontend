@@ -5,6 +5,8 @@ import { ExamCompletionSlice } from "./ExamCompletionSlice";
 import { ExamExecutionSlice } from "./ExamExecutionSlice";
 import { ExamPresentationSlice } from "./ExamPresentationSlice";
 import { VeroTestApi } from "./VeroTestApi";
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
     [VeroTestApi.reducerPath] : VeroTestApi.reducer,
@@ -15,7 +17,17 @@ const rootReducer = combineReducers({
     examcompletion: ExamCompletionSlice.reducer
 });
 
+const persistenceConfiguration = {
+    key: 'VeroTestState',
+    storage,
+    blacklist:[VeroTestApi.reducerPath]
+}
+
+const persistedReducer = persistReducer(persistenceConfiguration,rootReducer);
+
 export const Store = configureStore({
-    reducer : rootReducer,
-    middleware : (getDefaultMiddleware) => getDefaultMiddleware().concat(VeroTestApi.middleware)
+    reducer : persistedReducer,
+    middleware : (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck:false}).concat(VeroTestApi.middleware)
 });
+
+export const Persistor = persistStore(Store); 

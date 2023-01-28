@@ -11,35 +11,38 @@ import NoPage from './pages/NoPage';
 import ExecuteExam from './pages/ExecuteExam';
 import ExamSummary from './pages/ExamSummary';
 import { Provider } from 'react-redux';
-import { Store } from './redux/Store';
+import { Store, Persistor } from './redux/Store';
 import CreateExam from './pages/CreateExam';
 import AddQuestion from './pages/AddQuestion';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App()
 {
   return(
     <Provider store={Store}>
-      <BrowserRouter history={createBrowserHistory()}>
-          <Routes>
-            <Route path = "/" element = {<Login/>}/>
-            <Route path = "*" element = {<NoPage/>}/>
+      <PersistGate persistor={Persistor}>
+        <BrowserRouter history={createBrowserHistory()}>
+            <Routes>
+              <Route path = "/" element = {<Login/>}/>
+              <Route path = "*" element = {<NoPage/>}/>
 
-            <Route element ={<ProtectedRoutes allowedScope="STUDENTE"/>}>
-              <Route path="/home-studenti" element={<HomeStudenti/>}/>
-            </Route>
+              <Route element ={<ProtectedRoutes allowedScope="STUDENTE"/>}>
+                <Route path="/home-studenti" element={<HomeStudenti/>}/>
+              </Route>
 
-            <Route element ={<ProtectedRoutes allowedScope="DOCENTE"/>}>
-              <Route path="/home-docenti" element={<HomeDocenti/>} />
-              <Route path="/crea-esame" element={<CreateExam/>} />
-              <Route path="/crea-esame/:nome/aggiungi-domande" element={<AddQuestion/>}/>
-            </Route>
+              <Route element ={<ProtectedRoutes allowedScope="DOCENTE"/>}>
+                <Route path="/home-docenti" element={<HomeDocenti/>} />
+                <Route path="/crea-esame" element={<CreateExam/>} />
+                <Route path="/crea-esame/:nome/aggiungi-domande" element={<AddQuestion/>}/>
+              </Route>
 
-            <Route element ={<ProtectedRoutes allowedScope={"STUDENTE DOCENTE"}/>}>
-              <Route path="/esame/:data/:ora/:nome/:nquestion" element={<ExecuteExam/>}/>
-              <Route path="/esame/:data/:ora/:nome/summary" element={<ExamSummary/>}/>
-            </Route>
-          </Routes>
-      </BrowserRouter>
+              <Route element ={<ProtectedRoutes allowedScope={"STUDENTE DOCENTE"}/>}>
+                <Route path="/esame/:data/:ora/:nome/:nquestion" element={<ExecuteExam/>}/>
+                <Route path="/esame/:data/:ora/:nome/summary" element={<ExamSummary/>}/>
+              </Route>
+            </Routes>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   );
 }

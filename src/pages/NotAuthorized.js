@@ -5,7 +5,8 @@ import classesHome from "../pages/layout/HomePage.module.css";
 import classesTest from "../pages/layout/TestPage.module.css";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
 
-function NoPage (){
+function NotAuthorized (){
+
     const navigate = useNavigate();
     const scope    = useSelector(selectCurrentScope);
 
@@ -15,10 +16,10 @@ function NoPage (){
 
     return(
         <div className={classesHome.home}> 
-            <h3>Ops! Sembra che la pagina che stai cercando non esiste! </h3>
+            <h3>Non hai l'autorizzazione per visitare questa pagina!</h3>
             <button onClick={goBackHome} className={classesTest.buttonmanagequestion}> RITORNA ALLA HOME </button>
         </div>
     );
 }
 
-export default NoPage;
+export default NotAuthorized;

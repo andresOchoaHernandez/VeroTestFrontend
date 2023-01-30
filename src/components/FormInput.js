@@ -26,7 +26,7 @@ function FormInput(){
         try{
             const token = await login({username,password}).unwrap();
 
-            const scope  = jwt(token).scope;
+            const scope  = jwt(token).scope.includes("DOCENTE") ? "DOCENTE" : "STUDENTE";
             const userId = jwt(token).userId;
 
             dispatch(setCredentials({username:username,scope:scope,token:token,userId:userId}));

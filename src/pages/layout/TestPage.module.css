@@ -1,0 +1,33 @@
+label{
+    margin-left: 1vw;
+}
+.formcreatetest{
+    border-radius: 10px;
+    border: var(--border-color);
+    height: 50vh;
+    overflow: scroll;
+    margin-top:3vh; 
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.longinput{
+    width: 50vw;
+}
+.middleinput{
+    width: 10vw;
+}
+.buttoncrea{
+    margin-top: 8vh;
+    margin-left: 1vw;
+    font-size: 1.5vw;
+    height: 8vh;
+}
+.buttonmanagequestion{
+    margin-top: 8vh;
+    margin-left: 1vw;
+    font-size: 1vw;
+    height: 4vh;
+}
+.test{
+    margin-left: 1vw;
+}

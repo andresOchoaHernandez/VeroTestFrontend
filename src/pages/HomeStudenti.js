@@ -8,7 +8,7 @@ function HomeStudenti(){
     const username = useSelector(selectCurrentUsername);
     return(
         <div className={classes.home} aria-label="home studente">
-            <p>Benvenuto studente {username}</p>
+            <h3>Benvenuto studente {username}</h3>
             <ExamList/>
         </div>
     );

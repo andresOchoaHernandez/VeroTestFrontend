@@ -5,6 +5,8 @@ import { setExamResults } from "../redux/ExamCompletionSlice";
 import { addCompiledQuestion, changeAnswerToCompiledQuestion, endExamExecution } from "../redux/ExamExecutionSlice";
 import { endExamPresentation } from "../redux/ExamPresentationSlice";
 import { useCompleteTestMutation, useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
+import classesHome from "../pages/layout/HomePage.module.css";
+import classesTest from "../pages/layout/TestPage.module.css";
 
 function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
@@ -160,14 +162,14 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
     }
 
     return (
-        <div>
+        <div className={classesHome.home}>
             <div id="testoDomanda">
-                <p>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</p>
+                <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>
             </div>
             <form onSubmit={handleSubmit} autoComplete="off">
                 {domanda.risposte.map((input,index)=>{
                     return (
-                        <div key={domanda.nome + index}>
+                        <div className={classesTest.test} key={domanda.nome + index}>
                             <input defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
                             <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
                         </div>
@@ -176,18 +178,17 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 {
                     isLastQuestion?
                     (<div>
-                        <button name="domPrec" type="submit" >DOMANDA PRECEDENTE</button> 
-                        <button name="concludi" type="submit" >CONCLUDI ESAME</button>
+                        <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit" >DOMANDA PRECEDENTE</button> 
+                        <button className={classesTest.buttonmanagequestion} name="concludi" type="submit" >CONCLUDI ESAME</button>
                     </div>)
                     :
                     nquestion - 1 < 0 ?
-                        (<button name="domSuc" type="submit"> DOMANDA SUCCESSIVA </button>)
+                        (<button className={classesTest.buttonmanagequestion} name="domSuc" type="submit"> DOMANDA SUCCESSIVA </button>)
                         :
                         (<div>
-                            <button name="domPrec" type="submit">DOMANDA PRECEDENTE</button> 
-                            <button name="domSuc" type="submit">DOMANDA SUCCESSIVA</button>
+                            <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit">DOMANDA PRECEDENTE</button> 
+                            <button className={classesTest.buttonmanagequestion} name="domSuc" type="submit">DOMANDA SUCCESSIVA</button>
                         </div>)
-
                 }
             </form>
         </div>

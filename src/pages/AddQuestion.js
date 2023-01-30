@@ -4,6 +4,8 @@ import { endExamCreation } from "../redux/CreateExamSlice"
 import { useNavigate } from "react-router-dom"
 import { selectCurrentDataTestCreation,selectCurrentOraTestCreation,selectCurrentNomeTestCreation,selectCurrentOrdineCasualeTestCreation,selectCurrentDomandeConNumeroTestCreation} from "../redux/CreateExamSlice"
 import { useConnectDomandaToTestMutation, useCreateDomandaMutation, useCreateRispostaMutation, useCreateTestMutation } from "../redux/VeroTestApiExams"
+import classesTest from "./layout/TestPage.module.css"
+import classesHome from "./layout/HomePage.module.css"
 
 function AddQuestion(){
 
@@ -144,21 +146,21 @@ function AddQuestion(){
     }
 
     return (
-        <div>
-            PAGINA PER L'AGGIUNTA DI DOMANDE
+        <div className={classesHome.home}>
+            <h3>PAGINA PER LA CREAZIONE DEL TEST</h3>
             <form autoComplete="off" onSubmit={handleSubmit}>
                 {domandaInput.map((domande,indexDomande)=>{
                     return(
                         <div key={indexDomande}>
-                            <p> ********************* DOMANDA {indexDomande} *********************</p>
+                            <h4>DOMANDA {indexDomande}</h4>
                             <label>Nome domanda:</label>
-                            <input name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[\w\s\d?.,]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input className={classesTest.longinput} name="nomeDomanda" type="text" placeholder="Nome domanda" pattern="[\w\s\d?.,]*"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Testo domanda:</label>
-                            <input name="testoDomanda" type="text" placeholder="Testo domanda" onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input className={classesTest.longinput} name="testoDomanda" type="text" placeholder="Testo domanda" onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Punti domanda:</label>
-                            <input name="puntiDomanda" type="number" min="1.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
+                            <input className={classesTest.middleinput} name="puntiDomanda" type="number" min="1.0" step="0.01"  onChange={(event)=> handleDomandaInput(event,indexDomande)} required/>
                             <br/>
                             <label>Voglio che le risposte a questa domanda siano mostrate in ordine casuale:</label>
                             <input name="ordineCasualeDomanda" type="checkbox" onChange={(event)=> handleDomandaInput(event,indexDomande,true)} />
@@ -170,28 +172,27 @@ function AddQuestion(){
                                 domandaInput[indexDomande].risposte.map((risposte,indexRisposte)=>{
                                     return (
                                         <div key={indexRisposte}>
-                                            <p>==== RISPOSTA {indexRisposte} =====================================================</p>
+                                            <h4>RISPOSTA {indexRisposte}</h4>
                                             <label>Testo risposta:</label>
-                                            <input name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
+                                            <input className={classesTest.longinput} name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             <label>Punteggio risposta:</label>
-                                            <input name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
+                                            <input className={classesTest.middleinput} name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
-                                            {indexRisposte > 1 ?<button onClick={()=>removeAnswer(indexDomande,indexRisposte)} >RIMUOVI RISPOSTA</button>:null}
-                                            <p>=====================================================================================</p>
-                                            {domandaInput[indexDomande].risposte.length-1 === indexRisposte?<button onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>:null}
+                                            {indexRisposte > 1 ?<button className={classesTest.buttonmanagequestion} onClick={()=>removeAnswer(indexDomande,indexRisposte)} >RIMUOVI RISPOSTA</button>:null}
+                                            {domandaInput[indexDomande].risposte.length-1 === indexRisposte?<button className={classesTest.buttonmanagequestion} onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>:null}
                                         </div>
                                     );
                                 })
                             }
-                            {indexDomande > 0 ? <button onClick={()=>removeQuestion(indexDomande)}>RIMUOVI DOMANDA</button>:null}
-                            <p> ******************************************************************</p>
+                            {indexDomande > 0 ? <button className={classesTest.buttonmanagequestion} onClick={()=>removeQuestion(indexDomande)}>RIMUOVI DOMANDA</button>:null}
+                            <hr></hr>
                         </div>
                     );
                 })}
-                <button onClick={addDomanda} > AGGIUNGI UN'ALTRA DOMANDA </button>
+                <button className={classesTest.buttonmanagequestion} onClick={addDomanda} > AGGIUNGI UN'ALTRA DOMANDA </button>
                 <br/>
-                <button type="submit"> SALVA TEST </button>
+                <button className={classesTest.buttonmanagequestion} type="submit"> SALVA TEST </button>
             </form>
         </div>
     );

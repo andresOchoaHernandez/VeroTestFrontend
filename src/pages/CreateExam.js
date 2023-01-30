@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { endExamCreation, setExamCreation } from "../redux/CreateExamSlice";
+import classesTest from "./layout/TestPage.module.css"
+import classesHome from "./layout/HomePage.module.css"
 
 function CreateExam(){
     
@@ -36,9 +38,9 @@ function CreateExam(){
     }
 
     return(
-        <div>
-            PAGINA PER CREARE GLI ESAMI
-            <form autoComplete="off" onSubmit={handleSubmit}>
+        <div className={classesHome.home}>
+            <h3>PAGINA PER CREARE UN NUOVO ESAME</h3>
+            <form className={classesTest.formcreatetest} autoComplete="off" onSubmit={handleSubmit}>
                 <label htmlFor="dataEsame">Data esame : </label>
                 <input id="dataEsame" type="date" ref={examRef} onChange={handleDataInput} required/>
                 <br/>
@@ -46,7 +48,7 @@ function CreateExam(){
                 <input id="oraEsame" type="time" onChange={handleOraInput} required/>
                 <br/>
                 <label htmlFor="nomeEsame">Nome esame : </label>
-                <input id="nomeEsame" type="text" pattern="[a-zA-Z\s]*" onChange={handleNomeInput} placeholder="Nome esame" required/>
+                <input className={classesTest.longinput} id="nomeEsame" type="text" pattern="[a-zA-Z\s]*" onChange={handleNomeInput} placeholder="Nome esame" required/>
                 <br/>
                 <label htmlFor="ordineCasuale">Voglio che le domande siano mostrate in ordine casuale:</label>
                 <input id="ordineCasuale" type="checkbox" onChange={handleOCInput}/>         
@@ -54,7 +56,7 @@ function CreateExam(){
                 <label htmlFor="domandeConNumero">Voglio che le domande siano numerate:</label>
                 <input id="domandeConNumero" type="checkbox" onChange={handleDCNInput}/>
                 <br/>
-                <button type="submit"> CREA TEST </button>
+                <button className={classesTest.buttoncrea} type="submit"> CREA TEST </button>
             </form>
         </div>
     );

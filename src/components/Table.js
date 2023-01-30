@@ -1,11 +1,12 @@
 import React from "react";
 import { useTable } from "react-table";
+import classes from '../pages/layout/HomePage.module.css';
 
 function Table({columns,data}){
     const {getTableProps,getTableBodyProps,headerGroups,rows,prepareRow } = useTable({columns,data});
     return (
-        <table {...getTableProps()}>
-          <thead>
+        <table className={classes.examlist} {...getTableProps()}>
+          <thead className={classes.examlistheader}>
             {headerGroups.map(headerGroup => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
@@ -14,7 +15,7 @@ function Table({columns,data}){
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
+          <tbody className={classes.examlistbody} {...getTableBodyProps()}>
             {rows.map((row, i) => {
               prepareRow(row);
               return (

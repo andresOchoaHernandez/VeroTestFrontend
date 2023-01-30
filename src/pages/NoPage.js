@@ -1,8 +1,11 @@
 import React from "react";
+import classesHome from "../pages/layout/HomePage.module.css";
 
 function NoPage (){
     return(
-        <div> This page doesn't exist</div>
+        <div className={classesHome.home}> 
+            <h3>This page doesn't exist</h3>
+        </div>
     );
 }
 

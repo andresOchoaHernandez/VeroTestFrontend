@@ -1,9 +1,83 @@
+
+.examlist{
+    border-radius: 10px;
+    border: var(--border-color);
+    height: 45vh;
+    width: 98vw;
+    overflow: scroll;
+    margin-top:3vh; 
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.examlistheader{
+    text-align: left;
+    font-size: 4vh;
+    font-weight: bold;
+    color: var(--primary-color);
+    width: 35vw;
+    margin-top:1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+}
+.examlistbody{
+    text-align: left;
+    font-size: 2vh;
+    color: var(--secondary-color);
+    width: 35vw;
+    margin-top:1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+}
+button{
+    font-family: inherit;
+    font-size: 2vh;
+    color: white;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: var(--border-color);
+    height: 4vh;
+}
+.btn{
+    margin-top: 5vh;
+    margin-left: 1vw;
+}
+/*adattamento div sinistra schermo cellulare orientamento verticale*/
+@media screen and (orientation:portrait){
+    .examlist{
+        margin:1vw;
+        height: 45vh;
+        width: 98vw;
+    }
+    .examlistheader{
+        font-size: 5vw;
+        width: 90vw;
+        height: 5vh;
+        margin-bottom: 0vh;
+    }
+    h3{
+        font-size: 5vw;
+    }
+    button{
+        font-family: inherit;
+        font-size: 2vh;
+        color: white;
+        background-color: var(--primary-color);
+        border-radius: 10px;
+        border: var(--border-color);
+        height: 5vh;
+    } 
+}
+
+
+
+
 .home{
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    position: fixed; 
+    position: fixed;
+    overflow: scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

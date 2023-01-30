@@ -71,7 +71,7 @@ function ExamList(){
     const {data:exams,isLoading:isLoadingExams,isSuccess:isSuccesExams,isError:isErrorExams,errorExams} = useGetAllExamsQuery();
 
     return isLoadingExams ? 
-                <p>CARICAMENTO...</p>
+                <h2>CARICAMENTO...</h2>
                 :
                 isSuccesExams ?
                     (<div id="testDisponibili" aria-label="finestra con i test disponibili" tabIndex="10"><Table columns={columns} data={exams.data.allTest}/></div>)
@@ -79,7 +79,7 @@ function ExamList(){
                     isErrorExams ?
                         (<p>{JSON.stringify(errorExams)}</p>)
                         :
-                        (<p>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</p>);
+                        (<h3>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</h3>);
 }
 
 export default ExamList;

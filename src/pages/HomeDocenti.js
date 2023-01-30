@@ -13,9 +13,9 @@ function HomeDocenti(){
 
     return(
         <div className={classes.home} aria-label="homepage-docente">
-            <p>Benvenuto prof. {username}</p>
+            <h3>Benvenuto prof. {username}</h3>
             <ExamList/>
-            <button onClick={createEsame}>CREA ESAME</button>
+            <button className ={classes.btn} onClick={createEsame}>CREA NUOVO ESAME</button>
         </div>
     );
 }

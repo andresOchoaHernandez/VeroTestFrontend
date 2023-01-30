@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { endExamResults, selectCurrentDataTestResult, selectCurrentNomeTestResult, selectCurrentOraTestResult, selectCurrentResults } from '../redux/ExamCompletionSlice';
 import Table from '../components/Table';
 import { selectCurrentScope } from '../redux/AuthenticationSlice';
+import classesTest from "../pages/layout/TestPage.module.css";
+import classesHome from "../pages/layout/HomePage.module.css";
 
 function ExamSummary()
 {
@@ -36,10 +38,10 @@ function ExamSummary()
     }
 
     return(
-        <div id="riassunto" aria-label="riassunto esame" tabIndex="10">
+        <div className={classesHome.home} id="riassunto" aria-label="riassunto esame" tabIndex="10">
                 <Table columns={columns} data={risultati}/> 
-                <p> Punteggio totale: {punteggioTotale}</p>
-                <button onClick={goBackHome}> HOME </button>
+                <h4> Punteggio totale: {punteggioTotale}</h4>
+                <button className={classesTest.buttonmanagequestion} onClick={goBackHome}> HOME </button>
         </div>
     );
 }

@@ -11,7 +11,11 @@ label{
     margin-right: 1vw;
 }
 .longinput{
+    border-radius: 5px;
+    border: var(--border-color);
+    color: var(--primary-color);
     width: 50vw;
+    height: 4vh;
 }
 .middleinput{
     width: 10vw;
@@ -31,7 +35,17 @@ label{
 .test{
     margin-left: 1vw;
 }
-
+.newtest{
+    border-radius: 5px;
+    border: var(--border-color);
+    font-size: 1vw;
+    font-weight: lighter;
+    color: var(--primary-color);
+    height: 4vh;
+}
+.checkbox{
+   color: var(--primary-color);
+}
 @media screen and (orientation:portrait){
     .buttoncrea{
         font-size: 3vw;
@@ -40,5 +54,11 @@ label{
     }
     .buttonmanagequestion{
         font-size: 2vh;
+    }
+    .newtest{
+        font-size: 3vw;
+    }
+    label{
+        font-size: 3.5vw;
     }
 }

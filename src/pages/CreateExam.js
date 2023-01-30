@@ -42,19 +42,19 @@ function CreateExam(){
             <h3>PAGINA PER CREARE UN NUOVO ESAME</h3>
             <form className={classesTest.formcreatetest} autoComplete="off" onSubmit={handleSubmit}>
                 <label htmlFor="dataEsame">Data esame : </label>
-                <input id="dataEsame" type="date" ref={examRef} onChange={handleDataInput} required/>
+                <input className={classesTest.newtest} id="dataEsame" type="date" ref={examRef} onChange={handleDataInput} required/>
                 <br/>
                 <label htmlFor="oraEsame">Ora esame : </label>
-                <input id="oraEsame" type="time" onChange={handleOraInput} required/>
+                <input className={classesTest.newtest} id="oraEsame" type="time" onChange={handleOraInput} required/>
                 <br/>
                 <label htmlFor="nomeEsame">Nome esame : </label>
                 <input className={classesTest.longinput} id="nomeEsame" type="text" pattern="[a-zA-Z\s]*" onChange={handleNomeInput} placeholder="Nome esame" required/>
                 <br/>
                 <label htmlFor="ordineCasuale">Voglio che le domande siano mostrate in ordine casuale:</label>
-                <input id="ordineCasuale" type="checkbox" onChange={handleOCInput}/>         
+                <input className={classesTest.checkbox} id="ordineCasuale" type="checkbox" onChange={handleOCInput}/>         
                 <br/>
                 <label htmlFor="domandeConNumero">Voglio che le domande siano numerate:</label>
-                <input id="domandeConNumero" type="checkbox" onChange={handleDCNInput}/>
+                <input className={classesTest.checkbox} id="domandeConNumero" type="checkbox" onChange={handleDCNInput}/>
                 <br/>
                 <button className={classesTest.buttoncrea} type="submit"> CREA TEST </button>
             </form>

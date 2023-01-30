@@ -38,7 +38,7 @@ function ExecuteExam(){
                 <NoPage/>
         )
         :
-        (<p>L'esame si è ormai concluso</p>)
+        (<h3>L'esame si è ormai concluso</h3>)
     );      
 }
 

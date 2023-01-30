@@ -54,6 +54,15 @@ button{
     margin-top: 5vh;
     margin-left: 1vw;
 }
+.question{
+    border-radius: 10px;
+    border: var(--border-color);
+    height: 45vh;
+    width: 98vw;
+    overflow: scroll;
+    margin-top: 25vh;
+    margin-left: 1vw;
+}
 /*adattamento div sinistra schermo cellulare orientamento verticale*/
 @media screen and (orientation:portrait){
     .examlist{

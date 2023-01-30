@@ -21,7 +21,7 @@ function ExamSummary()
 
     const columns = [
         {
-            Header: `RIASSUNTO ESAME ${nomeEsame} SOTENUTO DEL ${dataEsame} ALLE ${oraEsame} `,
+            Header: `RIASSUNTO ESAME ${nomeEsame} SOTENUTO IL ${dataEsame} ALLE ${oraEsame} `,
             columns: [                
                 {Header: "RISPOSTA DATA"  ,accessor: "rispostaData"},
                 {Header: "PUNTI OTTENUTI" ,accessor: "puntiRispostaData"},

@@ -163,34 +163,36 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
 
     return (
         <div className={classesHome.home}>
-            <div id="testoDomanda">
-                <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>
-            </div>
-            <form onSubmit={handleSubmit} autoComplete="off">
-                {domanda.risposte.map((input,index)=>{
-                    return (
-                        <div className={classesTest.test} key={domanda.nome + index}>
-                            <input defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
-                            <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
-                        </div>
-                    );
-                })}
-                {
-                    isLastQuestion?
-                    (<div>
-                        <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit" >DOMANDA PRECEDENTE</button> 
-                        <button className={classesTest.buttonmanagequestion} name="concludi" type="submit" >CONCLUDI ESAME</button>
-                    </div>)
-                    :
-                    nquestion - 1 < 0 ?
-                        (<button className={classesTest.buttonmanagequestion} name="domSuc" type="submit"> DOMANDA SUCCESSIVA </button>)
-                        :
+            <div className={classesHome.question}>
+                <div id="testoDomanda">
+                    <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>
+                </div>
+                <form onSubmit={handleSubmit} autoComplete="off">
+                    {domanda.risposte.map((input,index)=>{
+                        return (
+                            <div className={classesTest.test} key={domanda.nome + index}>
+                                <input defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
+                                <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
+                            </div>
+                        );
+                    })}
+                    {
+                        isLastQuestion?
                         (<div>
-                            <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit">DOMANDA PRECEDENTE</button> 
-                            <button className={classesTest.buttonmanagequestion} name="domSuc" type="submit">DOMANDA SUCCESSIVA</button>
+                            <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit" >DOMANDA PRECEDENTE</button> 
+                            <button className={classesTest.buttonmanagequestion} name="concludi" type="submit" >CONCLUDI ESAME</button>
                         </div>)
-                }
-            </form>
+                        :
+                        nquestion - 1 < 0 ?
+                            (<button className={classesTest.buttonmanagequestion} name="domSuc" type="submit"> DOMANDA SUCCESSIVA </button>)
+                            :
+                            (<div>
+                                <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit">DOMANDA PRECEDENTE</button> 
+                                <button className={classesTest.buttonmanagequestion} name="domSuc" type="submit">DOMANDA SUCCESSIVA</button>
+                            </div>)
+                    }
+                </form>
+            </div>
         </div>
     );
     

@@ -31,3 +31,14 @@ label{
 .test{
     margin-left: 1vw;
 }
+
+@media screen and (orientation:portrait){
+    .buttoncrea{
+        font-size: 3vw;
+        height: 5vh;
+        width: 30vw;
+    }
+    .buttonmanagequestion{
+        font-size: 2vh;
+    }
+}

@@ -1,11 +1,19 @@
 import React from "react";
 import Table from './Table.js'
-import { useAllCompilazioniByUserOfExamMutation, useGetAllAnswersOfQuestionMutation, useGetAllExamsQuery, useGetAllQuestionsOfTestMutation, useGetExamMutation } from "../redux/VeroTestApiExams";
+import { useAllCompilazioniByUserOfExamMutation, useExamListWithPreviousCompilationFlagQuery, useGetAllAnswersOfQuestionMutation, useGetAllExamsQuery, useGetAllQuestionsOfTestMutation, useGetExamMutation } from "../redux/VeroTestApiExams";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setExamPresentation } from "../redux/ExamPresentationSlice.js";
 import { selectCurrentUserId } from "../redux/AuthenticationSlice.js";
 import { setExamExecution } from "../redux/ExamExecutionSlice.js";
+
+function checkIfExistPreviousCompilation(examsWithPrvComps,data,ora,nome){
+    for(const exam of examsWithPrvComps){
+        if(exam.data === data && exam.ora === ora && exam.nome === nome){
+            return exam.existPrevCompilation;
+        }
+    }
+}
 
 function ExamList(){
 
@@ -52,34 +60,52 @@ function ExamList(){
         }        
     }
 
-    const columns = [{
-        Header: "ESAMI DISPONIBILI",
-        columns: [
-            {Header: "nome" ,accessor: "nome"},
-            {Header: "data" ,accessor: "data"},
-            {Header: "ora"  ,accessor: "ora" },
-            {
-                Header: ""    ,id:'eseguiTest',
-                Cell: cell => (
-                    <button onClick={()=>beginExam(cell.row.values.data,cell.row.values.ora,cell.row.values.nome)}>
-                        ESEGUI TEST
-                    </button>
-                )
-            }]
-    }];
-
     const {data:exams,isLoading:isLoadingExams,isSuccess:isSuccesExams,isError:isErrorExams,errorExams} = useGetAllExamsQuery();
+    const {data:examsWithFlag,isLoading:isLoadingExamsWithFlag,isSuccess:isSuccesExamsWithFlag} = useExamListWithPreviousCompilationFlagQuery(idUtente);
 
-    return isLoadingExams ? 
-                <h2>CARICAMENTO...</h2>
-                :
-                isSuccesExams ?
-                    (<div id="testDisponibili" aria-label="finestra con i test disponibili" tabIndex="10"><Table columns={columns} data={exams.data.allTest}/></div>)
-                    :
-                    isErrorExams ?
-                        (<p>{JSON.stringify(errorExams)}</p>)
-                        :
-                        (<h3>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</h3>);
+    let content;
+
+    if(isLoadingExams && isLoadingExamsWithFlag){
+        content = <h2>CARICAMENTO...</h2>;
+    }
+    else if(isSuccesExams && isSuccesExamsWithFlag){
+
+        const examsWithPrevCompilations = examsWithFlag.data.examListWithPreviousCompilationFlag;
+
+        const columns = [{
+            Header: "ESAMI DISPONIBILI",
+            columns: [
+                {Header: "nome" ,accessor: "nome"},
+                {Header: "data" ,accessor: "data"},
+                {Header: "ora"  ,accessor: "ora" },
+                {
+                    Header: ""    ,id:'eseguiTest',
+                    Cell: cell => (
+                        <button onClick={()=>beginExam(cell.row.values.data,cell.row.values.ora,cell.row.values.nome)}>
+                            {
+                                checkIfExistPreviousCompilation(examsWithPrevCompilations,cell.row.values.data,cell.row.values.ora,cell.row.values.nome)?
+                                "RIPRENDI TEST"
+                                :
+                                "ESEGUI TEST"
+                            }
+                        </button>
+                    )
+                }]
+        }];
+
+        content = (
+        <div id="testDisponibili" aria-label="finestra con i test disponibili" tabIndex="10">
+            <Table columns={columns} data={exams.data.allTest}/>
+        </div>);
+    }
+    else if(isErrorExams){
+        content = (<p>{JSON.stringify(errorExams)}</p>);
+    }
+    else{
+        content = <h3>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</h3>;
+    }
+
+    return content;
 }
 
 export default ExamList;

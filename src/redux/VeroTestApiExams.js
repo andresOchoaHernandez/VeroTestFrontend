@@ -20,6 +20,26 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
                 })
             })
         }),
+        examListWithPreviousCompilationFlag: builder.query({
+            query: (idUtente) => ({
+                url: '/graphql',
+                method:'POST',
+                body: JSON.stringify({
+                    query: `                 
+                        query examListWithPreviousCompilationFlag($idUtente:Int!){
+                            examListWithPreviousCompilationFlag(idUtente:$idUtente){
+                                data,
+                                ora,
+                                nome,
+                                existPrevCompilation
+                            }
+                    }`,
+                    variables:{
+                        idUtente:idUtente
+                    }
+                })
+            })
+        }),
         getExam: builder.mutation({
             query: ({data,ora,nome}) => ({
                 url: '/graphql',
@@ -209,6 +229,7 @@ export const VeroTestApiExams = VeroTestApi.injectEndpoints({
 });
 
 export const { useGetAllExamsQuery } = VeroTestApiExams;
+export const {useExamListWithPreviousCompilationFlagQuery} = VeroTestApiExams;
 
 export const { useGetExamMutation } = VeroTestApiExams;
 export const { useGetAllQuestionsOfTestMutation } = VeroTestApiExams;

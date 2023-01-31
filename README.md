@@ -1,2 +1,2 @@
-# TestOnlineFrontend
-React application
+# VeroTest Frontend
+React and redux web application

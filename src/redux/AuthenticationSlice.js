@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//TODO: after every refresh the state is initialstate, so the user will log out
-
 export const AuthenticationSlice = createSlice({
     name : "authentication",
     initialState: {username:null,token:null,scope:null,userId:null,isLoggedIn:false},

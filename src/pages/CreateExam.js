@@ -20,7 +20,6 @@ function CreateExam(){
     const [ordineCasuale,setOrdineCasuale]       = useState(false);
     const [domandeConNumero,setDomandeConNumero] = useState(false);
 
-    //TODO: PERFORM CHECKS OF INPUTS
     const handleDataInput = (event) =>{setDataTest(event.target.value)};
     const handleOraInput  = (event) =>{setOraTest(event.target.value)};
     const handleNomeInput = (event) =>{setNomeTest(event.target.value)};

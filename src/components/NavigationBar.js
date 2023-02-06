@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
+import  classesNavigation from "../pages/layout/NavigationBar.module.css"
 
 function NavigationBar(){
 
@@ -11,14 +12,14 @@ function NavigationBar(){
 
     const menuLinks = [
         {
-            name: "home",
-            class: "fa-solid fa-house",
-            link: linkHome
-        },
-        {
             name: "logout",
             class: "fa-sharp fa-solid fa-right-from-bracket",
             link: "/logout"
+        },
+        {
+            name: "home",
+            class: "fa-solid fa-house",
+            link: linkHome
         }
     ];
 
@@ -27,13 +28,14 @@ function NavigationBar(){
     }
 
     return (
-        <nav>
-            <h4> Menu di navigazione </h4>
-            <ul>
+        <nav className={classesNavigation.navigationBarItems}>
+            <h4 className={classesNavigation.menuTitle}> Menu di navigazione </h4>
+            <div className={classesNavigation.menuIcon}><i className="fas fa-bars" /></div>
+            <ul className={classesNavigation.navigationMenu}>
                 {menuLinks.map((input,index) => {
                     return(
                         <li key={input.name + index}>
-                            <Link to={input.link}> 
+                            <Link to={input.link} className={classesNavigation.navigationLink}> 
                                 {input.name}
                                 <i className={input.class}/>
                             </Link>

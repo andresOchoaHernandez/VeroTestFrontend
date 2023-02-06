@@ -7,6 +7,7 @@ import { endExamPresentation } from "../redux/ExamPresentationSlice";
 import { useCompleteTestMutation, useInsertCompilazioneMutation } from "../redux/VeroTestApiExams";
 import classesHome from "../pages/layout/HomePage.module.css";
 import classesTest from "../pages/layout/TestPage.module.css";
+import NavigationBar from "./NavigationBar";
 
 function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
@@ -163,6 +164,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
 
     return (
         <div className={classesHome.home}>
+            <NavigationBar/>
             <div className={classesHome.question}>
                 <div id="testoDomanda">
                     <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>

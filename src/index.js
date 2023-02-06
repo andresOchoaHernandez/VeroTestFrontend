@@ -15,6 +15,7 @@ import { Store, Persistor } from './redux/Store';
 import CreateExam from './pages/CreateExam';
 import AddQuestion from './pages/AddQuestion';
 import { PersistGate } from 'redux-persist/integration/react';
+import LogOut from './components/LogOut';
 
 function App()
 {
@@ -25,6 +26,7 @@ function App()
             <Routes>
               <Route path = "/" element = {<Login/>}/>
               <Route path = "*" element = {<NoPage/>}/>
+              <Route path = "/logout" element = {<LogOut/>}/>
 
               <Route element ={<ProtectedRoutes allowedScope="STUDENTE"/>}>
                 <Route path="/home-studenti" element={<HomeStudenti/>}/>

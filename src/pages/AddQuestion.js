@@ -6,6 +6,7 @@ import { selectCurrentDataTestCreation,selectCurrentOraTestCreation,selectCurren
 import { useConnectDomandaToTestMutation, useCreateDomandaMutation, useCreateRispostaMutation, useCreateTestMutation } from "../redux/VeroTestApiExams"
 import classesTest from "./layout/TestPage.module.css"
 import classesHome from "./layout/HomePage.module.css"
+import NavigationBar from "../components/NavigationBar"
 
 function AddQuestion(){
 
@@ -147,6 +148,7 @@ function AddQuestion(){
 
     return (
         <div className={classesHome.home}>
+            <NavigationBar/>
             <h3>PAGINA PER LA CREAZIONE DEL TEST</h3>
             <form autoComplete="off" onSubmit={handleSubmit}>
                 {domandaInput.map((domande,indexDomande)=>{

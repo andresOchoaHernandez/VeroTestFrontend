@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { endExamCreation, setExamCreation } from "../redux/CreateExamSlice";
 import classesTest from "./layout/TestPage.module.css"
 import classesHome from "./layout/HomePage.module.css"
+import NavigationBar from "../components/NavigationBar";
 
 function CreateExam(){
     
@@ -38,6 +39,7 @@ function CreateExam(){
 
     return(
         <div className={classesHome.home}>
+            <NavigationBar/>
             <h3>PAGINA PER CREARE UN NUOVO ESAME</h3>
             <form className={classesTest.formcreatetest} autoComplete="off" onSubmit={handleSubmit}>
                 <label htmlFor="dataEsame">Data esame : </label>

@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
+import navbarClasses from "../pages/layout/NavigationBar.module.css"
+import logoUni from '../img/logo.png';
 
 function NavigationBar(){
 
@@ -25,8 +27,11 @@ function NavigationBar(){
     }
 
     return (
-        <header>
-            <h4> Menu di navigazione </h4>
+        <header className={navbarClasses.header}>
+            <div>
+                <h4> VeroTest </h4>
+                <img src={logoUni} alt="logo università di verona" width="60%" tabIndex="1"/>
+            </div>
             <nav>
                 <ul>
                     {menuLinks.map((input,index) => {

@@ -1,0 +1,43 @@
+.header{
+    background-color: black;
+    color: azure;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.header div{
+    display: flex;
+}
+
+.header div h4{
+    color: inherit;
+    font-size: 2rem;
+}
+
+header nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.header a{
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: .25rem;
+}
+
+.header nav ul li.active{
+    background-color: #555;
+}
+
+.header nav ul li:hover{
+    background-color: #777;
+}

@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
-import  classesNavigation from "../pages/layout/NavigationBar.module.css"
 
 function NavigationBar(){
 
@@ -13,37 +12,33 @@ function NavigationBar(){
     const menuLinks = [
         {
             name: "logout",
-            class: "fa-sharp fa-solid fa-right-from-bracket",
             link: "/logout"
         },
         {
             name: "home",
-            class: "fa-solid fa-house",
             link: linkHome
         }
     ];
 
     if (scope.includes("DOCENTE")){
-        menuLinks.push({name:"crea esame",class: "fa-solid fa-square-plus",link:"/crea-esame"});
+        menuLinks.push({name:"crea esame",link:"/crea-esame"});
     }
 
     return (
-        <nav className={classesNavigation.navigationBarItems}>
-            <h4 className={classesNavigation.menuTitle}> Menu di navigazione </h4>
-            <div className={classesNavigation.menuIcon}><i className="fas fa-bars" /></div>
-            <ul className={classesNavigation.navigationMenu}>
+        <header>
+            <h4> Menu di navigazione </h4>
+            <nav>
                 {menuLinks.map((input,index) => {
                     return(
-                        <li key={input.name + index}>
-                            <Link to={input.link} className={classesNavigation.navigationLink}> 
+                        <ul>
+                            <Link key={index} to={input.link}> 
                                 {input.name}
-                                <i className={input.class}/>
                             </Link>
-                        </li>
+                        </ul>
                     );
                 })}
-            </ul>
-        </nav>
+            </nav>
+        </header>
     );
 
 }

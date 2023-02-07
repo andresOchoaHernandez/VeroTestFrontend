@@ -30,8 +30,8 @@ function NavigationBar(){
             <nav>
                 {menuLinks.map((input,index) => {
                     return(
-                        <ul>
-                            <Link key={index} to={input.link}> 
+                        <ul key={index}>
+                            <Link to={input.link}> 
                                 {input.name}
                             </Link>
                         </ul>

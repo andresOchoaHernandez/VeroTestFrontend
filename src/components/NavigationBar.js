@@ -28,15 +28,17 @@ function NavigationBar(){
         <header>
             <h4> Menu di navigazione </h4>
             <nav>
-                {menuLinks.map((input,index) => {
-                    return(
-                        <ul key={index}>
-                            <Link to={input.link}> 
-                                {input.name}
-                            </Link>
-                        </ul>
-                    );
-                })}
+                <ul>
+                    {menuLinks.map((input,index) => {
+                        return(
+                            <li key={index}>
+                                <Link to={input.link}> 
+                                    {input.name}
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
             </nav>
         </header>
     );

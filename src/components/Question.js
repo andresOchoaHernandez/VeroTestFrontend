@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setExamResults } from "../redux/ExamCompletionSlice";
@@ -171,19 +171,22 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
         }
     }
 
+    const questionReference = useRef();
+    useEffect(()=>{questionReference.current.focus();},[])
+
     return (
-        <div className={classesHome.home}>
+        <div className={classesHome.home} ref={questionReference}>
             <NavigationBar/>
-            <div className={classesHome.question}>
-                <div id="testoDomanda">
+            <div className={classesHome.question} tabIndex="0">
+                <div id="testoDomanda" tabIndex="0">
                     <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>
                 </div>
                 <form onSubmit={handleSubmit} autoComplete="off">
                     {domanda.risposte.map((input,index)=>{
                         return (
                             <div className={classesTest.test} key={domanda.nome + index}>
-                                <input defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
-                                <label htmlFor={domanda.nome} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
+                                <input id={domanda.nome.replace(/\s/g,"") + input.id} defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
+                                <label htmlFor={domanda.nome.replace(/\s/g,"") + input.id} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
                             </div>
                         );
                     })}

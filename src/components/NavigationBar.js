@@ -27,17 +27,17 @@ function NavigationBar(){
     }
 
     return (
-        <header className={classesNav.header}>
+        <header className={classesNav.header} tabIndex="0">
             <div>
                 <h4> VeroTest </h4>
-                <img className={classesNav.logo} src={logoUni} alt="logo università di verona" tabIndex="1"/>
+                <img className={classesNav.logo} src={logoUni} alt="logo università di verona" tabIndex="0"/>
             </div>
             <nav>
                 <ul>
                     {/*per ogni elemento di menuLinks vado a creare un elemento <li> ognuno con un <Link> al link di menuLink e come nome quello indicato in menuLink*/}
                     {menuLinks.map((input,index) => { //creo elemento list item che contiene un elemento <Link> per ogni voce della navbar
                         return(
-                            <li key={index}>
+                            <li key={index} tabIndex="0">
                                 <Link to={input.link}> 
                                     {input.name}
                                 </Link>

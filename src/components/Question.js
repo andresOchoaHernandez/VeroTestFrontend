@@ -11,9 +11,9 @@ import NavigationBar from "./NavigationBar";
 
 function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
-    const eligibleAnswerId = [];
+    const eligibleAnswerId = []; //array per tutte le possibili risposte di una domanda
 
-    for(const risposta of domanda.risposte){
+    for(const risposta of domanda.risposte){ //popolo array con l'id di tutte le possibili risposte
         eligibleAnswerId.push(parseInt(risposta.id));
     }
 
@@ -23,9 +23,11 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
     const [selectedAnswersId,setAnswer] = useState('')
     const handleSelectedAnswer = (event) =>{setAnswer(event.target.value)}
 
+    //funzioni per interagire con il back-end per inserire compilazione e completare il test
     const insertCompilazione = useInsertCompilazioneMutation()[0];
     const completeTest = useCompleteTestMutation()[0];
 
+    //verifico se domanda è stata risposta e con che risposta
     function checkIfanswered(nomeDomanda,idRisposta){
         let result = false;
         domandeCompilate.forEach((input)=>{
@@ -36,6 +38,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
         return result;
     }
 
+    //verifico se domanda è stata risposta
     function checkIfQuestionIsAnswered(nomeDomanda){
         let result = false;
         domandeCompilate.forEach((input)=>{
@@ -47,7 +50,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
     }
 
     const concludiEsame = async (compilazione) => {
-        const {data:{completeTest:results}} = await completeTest(compilazione).unwrap();
+        const {data:{completeTest:results}} = await completeTest(compilazione).unwrap(); //il server mi restituisce i risultati della compilazione
         dispatch(setExamResults({dataTest:dataTest,oraTest:oraTest,nomeTest:nomeTest,results:results}))
         dispatch(endExamExecution());
         dispatch(endExamPresentation());
@@ -68,6 +71,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             idRisposta: parseInt(selectedAnswersId)
         }
 
+        //l'utente non ha selezionato nessuna risposta
         if(isNaN(compilazione.idRisposta)){ 
 
             if(pressedButton === "domSuc"){
@@ -88,6 +92,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
             return;
         }
 
+        //l'utente ha modificato una risposta data in precedenza (verifico se domanda è tra l'elenco delle domande compilate)
         if(checkIfQuestionIsAnswered(compilazione.nomeDomanda)){
 
             let prevAnswer;
@@ -97,6 +102,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 }
             });
 
+            //se le due risposte sono uguali
             if(compilazione.idRisposta === prevAnswer ){ 
 
                 if(pressedButton === "domSuc"){
@@ -110,9 +116,10 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 }
                 return;
             }
+            //se non sono uguali perchè si verifica side effect
             else{
                 /* side effect => answers of unrelated questions are registered*/
-                if(!eligibleAnswerId.includes(compilazione.idRisposta)){
+                if(!eligibleAnswerId.includes(compilazione.idRisposta)){ //verifico che idRisposta appena data non sia tra quelle possibili per quella domanda
                     if(pressedButton === "domSuc"){
                         navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)+1}`);
                     }
@@ -130,8 +137,10 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                     return;
                 }
             }
+            //se non sono uguali e quindi l'utente ha modificato la risposta data ad una domanda già compilata
             dispatch(changeAnswerToCompiledQuestion({nomeDomanda:compilazione.nomeDomanda,nuovaRisposta:compilazione.idRisposta}))
         }
+        //l'utente ha selezionato la risposta
         else{
             dispatch(addCompiledQuestion({nomeDomanda:compilazione.nomeDomanda,risposta:compilazione.idRisposta}));
         }
@@ -179,13 +188,13 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                         );
                     })}
                     {
-                        isLastQuestion?
+                        isLastQuestion? //ultima domanda
                         (<div>
                             <button className={classesTest.buttonmanagequestion} name="domPrec" type="submit" >DOMANDA PRECEDENTE</button> 
                             <button className={classesTest.buttonmanagequestion} name="concludi" type="submit" >CONCLUDI ESAME</button>
                         </div>)
                         :
-                        nquestion - 1 < 0 ?
+                        nquestion - 1 < 0 ? //prima domanda
                             (<button className={classesTest.buttonmanagequestion} name="domSuc" type="submit"> DOMANDA SUCCESSIVA </button>)
                             :
                             (<div>

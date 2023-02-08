@@ -107,10 +107,10 @@ function AddQuestion(){
     const handleDomandaInput = (event,index,isCheckBox=false) => {
         const formData = [...domandaInput];
         if(isCheckBox){
-            formData[index][event.target.name] = event.target.checked;    
+            formData[index][event.target.name] = event.target.checked; //settiamo se vogliamo domanda con risposte numerate o in ordine casuale      
         }
         else{
-            formData[index][event.target.name] = event.target.value;
+            formData[index][event.target.name] = event.target.value; //settiamo (ad esempio) nome domanda con il value che ha triggerato l'evento di handleDomandaInput
         }
         setDomandaInput(formData);
     }

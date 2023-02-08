@@ -1,5 +1,5 @@
 .header{
-    background-color: black;
+    background-color: var(--primary-color);
     color: azure;
     display: flex;
     justify-content: space-between;
@@ -7,16 +7,19 @@
     gap: 2rem;
     padding: 0 1rem;
 }
-
+.logo{
+    height: 3em;
+    width: 8em;
+}
 .header div{
     display: flex;
+    flex-direction: column;
 }
-
 .header div h4{
     color: inherit;
-    font-size: 2rem;
+    font-size: 2em;
+    margin:0;
 }
-
 header nav ul {
     padding: 0;
     margin: 0;
@@ -24,7 +27,6 @@ header nav ul {
     display: flex;
     gap: 1rem;
 }
-
 .header a{
     color: inherit;
     text-decoration: none;
@@ -37,7 +39,25 @@ header nav ul {
 .header nav ul li.active{
     background-color: #555;
 }
-
 .header nav ul li:hover{
-    background-color: #777;
+    font-size: 1.2em;
+}
+
+@media screen and (orientation:portrait){
+    .header div h4{
+        color: inherit;
+        font-size: 1.5em;
+        margin:0;
+    }
+    .logo{
+        height: 2em;
+        width: 6em;
+    }
+    header nav ul {
+        flex-direction: column;
+    }
+    .header nav ul li{
+        background-color: transparent;
+        font-size: 0.8em;
+    }
 }

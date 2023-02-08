@@ -58,12 +58,6 @@
   }
   
   @media screen and (orientation:portrait){
-      h1{
-          font-size: 15vw;
-      }
-      h2{
-          font-size: 8vw;
-      }
       .hometitle{
           margin-top:4vh;
           margin-left: 22vw;
@@ -97,5 +91,8 @@
       }
       .p{
           font-size: 3vw;
+      }
+      .caricamento{
+        font-size: 2em;
       }
   }

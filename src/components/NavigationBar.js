@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
-import navbarClasses from "../pages/layout/NavigationBar.module.css"
+import classesNav from "../pages/layout/NavigationBar.module.css"
 import logoUni from '../img/logo.png';
 
 function NavigationBar(){
@@ -27,14 +27,15 @@ function NavigationBar(){
     }
 
     return (
-        <header className={navbarClasses.header}>
+        <header className={classesNav.header}>
             <div>
                 <h4> VeroTest </h4>
-                <img src={logoUni} alt="logo università di verona" width="60%" tabIndex="1"/>
+                <img className={classesNav.logo} src={logoUni} alt="logo università di verona" tabIndex="1"/>
             </div>
             <nav>
                 <ul>
-                    {menuLinks.map((input,index) => {
+                    {/*per ogni elemento di menuLinks vado a creare un elemento <li> ognuno con un <Link> al link di menuLink e come nome quello indicato in menuLink*/}
+                    {menuLinks.map((input,index) => { //creo elemento list item che contiene un elemento <Link> per ogni voce della navbar
                         return(
                             <li key={index}>
                                 <Link to={input.link}> 

@@ -14,7 +14,7 @@ function FormInput(){
     const userRef = useRef()
     const errorRef = useRef()
     
-    const [username,setUsername]  = useState('');
+    const [username,setUsername]  = useState(''); //dichiariamo variabile username e funzione setUsername che serve per aggiornare la variabile username e che all'inizio voglio che il valore sia ""
     const [password,setPassword]  = useState(''); 
     const [error,setErrorMessage] = useState('');
 
@@ -56,13 +56,13 @@ function FormInput(){
 
     useEffect(() => {setErrorMessage('')},[username,password]);
 
-    const handleUsernameInput = (event) => {setUsername(event.target.value)}
+    const handleUsernameInput = (event) => {setUsername(event.target.value)} //qual è il valore che ha triggerato l'azione di setUsername
 
     const handlePasswordInput = (event) => {setPassword(event.target.value)}
 
     return(
         isLoading?
-        <h1> CARICAMENTO... </h1>
+        <h1 className={classes.caricamento}> CARICAMENTO... </h1>
         :
         <div className={classes.login} aria-label="finestra di login" tabIndex="4">
             <h2 tabIndex="5">LOGIN</h2>
@@ -75,7 +75,7 @@ function FormInput(){
                         <input id="pwd" type="password" name="password" value={password} onChange={handlePasswordInput} placeholder="Password" className={classes.input} tabIndex="10" required></input>
                         <br></br>
                         <input type="submit" value="ACCEDI"className={classes.btnaccedi} tabIndex="11"></input>
-                        <p ref={errorRef} className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>
+                        <p ref={errorRef} className={error? "error" : "offscreen"} aria-live="assertive">{error}</p>{/*aria-live="assertive" per dire che l'utente deve poter vedere subito questo messaggio di errore*/}
                     </div>
                 </form>
             </div>         

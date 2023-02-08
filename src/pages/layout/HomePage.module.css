@@ -15,6 +15,7 @@
 .examlist{
     border-radius: 10px;
     border: var(--border-color);
+    border-width: 0.3vh;
     height: 45vh;
     width: 98vw;
     overflow: scroll;
@@ -34,35 +35,35 @@
 }
 .examlistbody{
     text-align: left;
-    font-size: 2vh;
+    font-size: 0.8em;
     color: var(--secondary-color);
-    width: 35vw;
     margin-top:1vh;
     margin-bottom: 1vh;
     margin-left: 1vw;
 }
 button{
     font-family: inherit;
-    font-size: 2vh;
+    font-size: 0.9em;
     color: white;
     background-color: var(--primary-color);
     border-radius: 10px;
     border: var(--border-color);
-    height: 4vh;
+    height: 2em;
 }
 .btn{
-    margin-top: 5vh;
+    margin-top: 0.1em;
     margin-left: 1vw;
 }
 .question{
     border-radius: 10px;
     border: var(--border-color);
-    height: 45vh;
+    border-width: 0.3vh;
+    height: 15em;
     width: 98vw;
     overflow: scroll;
-    margin-top: 25vh;
-    margin-left: 1vw;
+    margin: 25vh auto;
 }
+
 /*adattamento div sinistra schermo cellulare orientamento verticale*/
 @media screen and (orientation:portrait){
     .examlist{
@@ -76,9 +77,6 @@ button{
         height: 5vh;
         margin-bottom: 0vh;
     }
-    h3{
-        font-size: 5vw;
-    }
     button{
         font-family: inherit;
         font-size: 2vh;
@@ -88,71 +86,9 @@ button{
         border: var(--border-color);
         height: 5vh;
     } 
-}
-
-
-
-
-
-/*adattamento div sinistra schermo cellulare orientamento verticale*/
-@media screen and (orientation:portrait){
-    .containerleft{
-        margin:1vw;
-        height: 45vh;
+    .question{
+        height: 60vh;
         width: 98vw;
-    }
-    .headerleft{
-        font-size: 5vw;
-        width: 90vw;
-        height: 5vh;
-        margin-bottom: 0vh;
-    }
-    .containerleftbottom{
-        height: 30vh;
-        width: 98vw;
-    }
-    .headerleftbottom{
-        font-size: 5vw;
-        font-weight: bold;
-    }
-    .descript{
-        font-size: 5vw;
-    }
-    .starttest{
-        position: relative;
-        font-size: 5vw;
-        color:var(--primary-color);
-    }
-    .iconlogout{
-        font-size: 5vw;
-        margin-top: 1vh;
-        margin-left: 37vw;
-    }
-    .create{
-        font-size: 4vw;
-        left:50vw;
-        top:2vh;
-    }
-    .divextraicon{
-        height: 15vh;
-        flex-direction: row; 
-    }
-    .containerextraicon{
-        top:80vh;
-        left:1vw;
-        height: 15vh;
-        width: 95vw;
-    }
-    .iconuser{
-        font-size: 6vw;
-        margin-top: 1vh;
-        margin-left: 20vw;
-        color: var(--primary-color);
-    }
-    .iconbox{
-        font-size: 6vw;
-        margin-top: 1vh;
-        margin-left: 30vw;
-        color: var(--primary-color);
+        margin:10vh auto;
     }
 }

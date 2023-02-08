@@ -15,7 +15,7 @@ function Table({columns,data}){
               </tr>
             ))}
           </thead>
-          <tbody className={classes.examlistbody} {...getTableBodyProps()}>
+          <tbody  className={classes.examlistbody} {...getTableBodyProps()}>
             {rows.map((row, i) => {
               prepareRow(row);
               return (

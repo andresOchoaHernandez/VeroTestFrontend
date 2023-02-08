@@ -7,7 +7,7 @@ import NoPage from "./NoPage";
 import Question from "../components/Question";
 
 function ExecuteExam(){
-    const {nquestion} = useParams();
+    const {nquestion} = useParams(); //recuperiamo dall'url il parametro nquestion
 
     const userId = useSelector(selectCurrentUserId);
 
@@ -15,8 +15,8 @@ function ExecuteExam(){
     const oraTest = useSelector(presentedExamOra);
     const nomeTest = useSelector(presentedExamNome);
     const domandeConNumeroEsame = useSelector (presentedExamDomandeConNumero);
-    const domandeEsame = useSelector (presentedExamDomande);
-    const domandeCompilate = useSelector(domandeCompilateExecutionExam);
+    const domandeEsame = useSelector (presentedExamDomande); //array con tutti gli oggetti domanda
+    const domandeCompilate = useSelector(domandeCompilateExecutionExam); //array con tutti gli oggetti compilazione di quell'utente per quell'esame
 
     const examInExec = useSelector(isExamInProgress);
 
@@ -29,8 +29,8 @@ function ExecuteExam(){
                     oraTest={oraTest} 
                     nomeTest={nomeTest} 
                     domandeConNumeroEsame={domandeConNumeroEsame} 
-                    domanda={domandeEsame[parseInt(nquestion)]} 
-                    nquestion={parseInt(nquestion)} 
+                    domanda={domandeEsame[parseInt(nquestion)]} //domanda alla posizione parseInt(nquestion)
+                    nquestion={parseInt(nquestion)} //numero della domanda
                     domandeCompilate={domandeCompilate} 
                     isLastQuestion={domandeEsame.length-1===parseInt(nquestion)}
                 />

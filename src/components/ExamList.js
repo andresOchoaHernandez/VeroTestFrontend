@@ -30,7 +30,7 @@ function ExamList(){
     const beginExam = async (data,ora,nome) => {
 
         try{
-            const {data:{testByDateHourAndName:exam}} = await getExam({data,ora,nome}).unwrap();    
+            const {data:{testByDateHourAndName:exam}} = await getExam({data,ora,nome}).unwrap(); //passandogli data, ora e nome del test    
             const {data:{allDomandaByTest:questions}} = await getAllQuestionsOfExam({data,ora,nome}).unwrap();
 
             let newExamPresentationState = structuredClone(exam);
@@ -41,7 +41,7 @@ function ExamList(){
                 newExamPresentationState.domande[index].risposte = [...answers];
             }
 
-            dispatch(setExamPresentation(newExamPresentationState));
+            dispatch(setExamPresentation(newExamPresentationState)); //setto l'oggetto newExamPresentationState come nuovo stato dell'ExamPresentationSlice
 
 
             const {data:{allCompilazioniByUserOfExam:previousCompilations}} = await getPreviousCompilationsByUserOfExam({idUtente:idUtente,dataTest:data,oraTest:ora,nomeTest:nome}).unwrap();
@@ -61,7 +61,7 @@ function ExamList(){
     }
 
     const {data:exams,isLoading:isLoadingExams,isSuccess:isSuccesExams,isError:isErrorExams,errorExams} = useGetAllExamsQuery();
-    const {data:examsWithFlag,isLoading:isLoadingExamsWithFlag,isSuccess:isSuccesExamsWithFlag} = useExamListWithPreviousCompilationFlagQuery(idUtente);
+    const {data:examsWithFlag,isLoading:isLoadingExamsWithFlag,isSuccess:isSuccesExamsWithFlag} = useExamListWithPreviousCompilationFlagQuery(idUtente); //mi torna una lista di esami compilati da un utente con idUtente con le informazioni di data, ora, nome e una flag per dirmi se quell'esame ha compilazioni precedenti (per questo idUtente mi dice se ci sono già delle compilazioni)
 
     let content;
 
@@ -99,7 +99,7 @@ function ExamList(){
         </div>);
     }
     else if(isErrorExams){
-        content = (<p>{JSON.stringify(errorExams)}</p>);
+        content = (<p>{JSON.stringify(errorExams)}</p>); //stringify per convertire valore javascript errorExams in stringa json
     }
     else{
         content = <h3>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</h3>;

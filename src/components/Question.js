@@ -11,9 +11,11 @@ import NavigationBar from "./NavigationBar";
 
 function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domanda,nquestion,isLastQuestion,domandeCompilate})
 {
-    const eligibleAnswerId = []; //array per tutte le possibili risposte di una domanda
+    //array per tutte le possibili risposte di una domanda
+    const eligibleAnswerId = []; 
 
-    for(const risposta of domanda.risposte){ //popolo array con l'id di tutte le possibili risposte
+    //popolo array con l'id di tutte le possibili risposte
+    for(const risposta of domanda.risposte){ 
         eligibleAnswerId.push(parseInt(risposta.id));
     }
 
@@ -117,9 +119,10 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                 return;
             }
             //se non sono uguali perchè si verifica side effect
+            //SIDE EFFECT: sto salvando nella compilazione una risposta il cui id non è tra quello delle risposte possibili per questa domanda ma per la domanda precedente
             else{
-                /* side effect => answers of unrelated questions are registered*/
-                if(!eligibleAnswerId.includes(compilazione.idRisposta)){ //verifico che idRisposta appena data non sia tra quelle possibili per quella domanda
+                //se l'id della risposta non è tra quelle possibili
+                if(!eligibleAnswerId.includes(compilazione.idRisposta)){
                     if(pressedButton === "domSuc"){
                         navigate(`/esame/${dataTest}/${oraTest}/${nomeTest}/${parseInt(nquestion)+1}`);
                     }
@@ -129,7 +132,7 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
                     else if(pressedButton === "concludi"){
                         domandeCompilate.forEach((input,index)=>{
                             if(input.nomeDomanda === compilazione.nomeDomanda){
-                                compilazione.idRisposta = input.risposta;
+                                compilazione.idRisposta = input.risposta; //inserisco id corretto
                             }
                         });
                         concludiEsame(compilazione);
@@ -172,21 +175,24 @@ function Question({userId,dataTest,oraTest,nomeTest,domandeConNumeroEsame,domand
     }
 
     const questionReference = useRef();
-    useEffect(()=>{questionReference.current.focus();},[])
+    useEffect(()=>{questionReference.current.focus();},[]);
+
+    useEffect(()=> {document.title="Test: "+ nomeTest}, [nomeTest]);
+
 
     return (
-        <div className={classesHome.home} ref={questionReference}>
+        <div key={parseInt(nquestion)} className={classesHome.home} ref={questionReference} tabIndex="0">
             <NavigationBar/>
-            <div className={classesHome.question} tabIndex="0">
-                <div id="testoDomanda" tabIndex="0">
-                    <h4>{domandeConNumeroEsame?nquestion+" : "+domanda.testo:domanda.testo}</h4>
+            <div aria-label={"test in esecuzione "+ nomeTest + ", domanda "+ (parseInt(nquestion)+1)} className={classesHome.question} tabIndex="0">
+                <div id="testoDomanda" >
+                    <h4 tabIndex="0" className={classesHome.testodomanda}>{domandeConNumeroEsame?parseInt(nquestion)+1+" : "+domanda.testo:domanda.testo}</h4>
                 </div>
-                <form onSubmit={handleSubmit} autoComplete="off">
+                <form aria-label="seleziona una risposta" onSubmit={handleSubmit} autoComplete="off" tabIndex="0">
                     {domanda.risposte.map((input,index)=>{
                         return (
-                            <div className={classesTest.test} key={domanda.nome + index}>
-                                <input id={domanda.nome.replace(/\s/g,"") + input.id} defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer} required/>
-                                <label htmlFor={domanda.nome.replace(/\s/g,"") + input.id} >{domanda.risposteConNumero?index+" : "+input.testo:input.testo}</label>
+                            <div className={classesTest.test} key={domanda.nome + index} >
+                                <input aria-labelledby={domanda.nome.replace(/\s/g,"") + input.id + "_label"} label="" className={classesTest.radioButton} id={domanda.nome.replace(/\s/g,"") + input.id} defaultChecked={checkIfanswered(domanda.nome,input.id)} name={domanda.nome} type="radio" value={input.id} onChange={handleSelectedAnswer}required/>
+                                <label id={domanda.nome.replace(/\s/g,"") + input.id + "_label"} htmlFor={domanda.nome.replace(/\s/g,"") + input.id} >{domanda.risposteConNumero?parseInt(index)+1+" : "+input.testo:input.testo}</label>
                             </div>
                         );
                     })}

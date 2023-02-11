@@ -14,7 +14,8 @@ function FormInput(){
     const userRef = useRef()
     const errorRef = useRef()
     
-    const [username,setUsername]  = useState(''); //dichiariamo variabile username e funzione setUsername che serve per aggiornare la variabile username e che all'inizio voglio che il valore sia ""
+
+    const [username,setUsername]  = useState('');
     const [password,setPassword]  = useState(''); 
     const [error,setErrorMessage] = useState('');
 
@@ -52,8 +53,10 @@ function FormInput(){
         }
     }
 
+    //useEffect: Reack Hook per eseguire funzione ogni volta che c'è un cambiamento di stato
+    //recuperare focus
     useEffect(() => {userRef.current.focus()},[]);
-
+    //quando scrivo input devi settarmi " " per l'errore
     useEffect(() => {setErrorMessage('')},[username,password]);
 
     const handleUsernameInput = (event) => {setUsername(event.target.value)} //qual è il valore che ha triggerato l'azione di setUsername

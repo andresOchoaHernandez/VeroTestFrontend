@@ -58,10 +58,13 @@ button{
     border-radius: 10px;
     border: var(--border-color);
     border-width: 0.3vh;
-    height: 15em;
+    height: 25em;
     width: 98vw;
     overflow: scroll;
-    margin: 25vh auto;
+    margin: 5vh auto;
+}
+.testodomanda{
+    color: #7A151A;
 }
 
 /*adattamento div sinistra schermo cellulare orientamento verticale*/
@@ -87,8 +90,8 @@ button{
         height: 5vh;
     } 
     .question{
-        height: 60vh;
+        height: 25em;
         width: 98vw;
-        margin:10vh auto;
+        margin:5vh auto;
     }
 }

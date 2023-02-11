@@ -30,22 +30,26 @@ function ExamList(){
     const beginExam = async (data,ora,nome) => {
 
         try{
-            const {data:{testByDateHourAndName:exam}} = await getExam({data,ora,nome}).unwrap(); //passandogli data, ora e nome del test    
+            //passandogli data, ora e nome del test torna il test, domande e risposte
+            const {data:{testByDateHourAndName:exam}} = await getExam({data,ora,nome}).unwrap(); 
             const {data:{allDomandaByTest:questions}} = await getAllQuestionsOfExam({data,ora,nome}).unwrap();
 
             let newExamPresentationState = structuredClone(exam);
             newExamPresentationState.domande = structuredClone(questions);
 
+            //for await di oggetti iterabili asincroni question
             for await (const [index,question] of questions.entries()){
                 const {data:{allRispostaOfDomanda:answers}} = await getAllAnswersOfQuestion(question.nome).unwrap();
                 newExamPresentationState.domande[index].risposte = [...answers];
             }
 
-            dispatch(setExamPresentation(newExamPresentationState)); //setto l'oggetto newExamPresentationState come nuovo stato dell'ExamPresentationSlice
+            //setto l'oggetto newExamPresentationState come nuovo stato dell'ExamPresentationSlice
+            dispatch(setExamPresentation(newExamPresentationState));
 
-
+            //recupero compilazioni precedenti dell'utente ad un esame
             const {data:{allCompilazioniByUserOfExam:previousCompilations}} = await getPreviousCompilationsByUserOfExam({idUtente:idUtente,dataTest:data,oraTest:ora,nomeTest:nome}).unwrap();
             
+            //recupero domande già compilate
             let newExamExecutionState = {data:data,ora:ora,nome:nome,domandeCompilate:[]};
             previousCompilations.forEach((input) => {
                 newExamExecutionState.domandeCompilate.push({nomeDomanda:input.nomeDomanda,risposta:input.idRisposta});
@@ -59,15 +63,19 @@ function ExamList(){
             console.log(error)
         }        
     }
-
+    
+    //lita esami eseguibili
     const {data:exams,isLoading:isLoadingExams,isSuccess:isSuccesExams,isError:isErrorExams,errorExams} = useGetAllExamsQuery();
-    const {data:examsWithFlag,isLoading:isLoadingExamsWithFlag,isSuccess:isSuccesExamsWithFlag} = useExamListWithPreviousCompilationFlagQuery(idUtente); //mi torna una lista di esami compilati da un utente con idUtente con le informazioni di data, ora, nome e una flag per dirmi se quell'esame ha compilazioni precedenti (per questo idUtente mi dice se ci sono già delle compilazioni)
+    //lista esami già iniziati
+    const {data:examsWithFlag,isLoading:isLoadingExamsWithFlag,isSuccess:isSuccesExamsWithFlag} = useExamListWithPreviousCompilationFlagQuery(idUtente);
 
     let content;
 
+    //se sta caricando gli esami
     if(isLoadingExams && isLoadingExamsWithFlag){
         content = <h2>CARICAMENTO...</h2>;
     }
+    //altrimenti visualizzo tabella con esami
     else if(isSuccesExams && isSuccesExamsWithFlag){
 
         const examsWithPrevCompilations = examsWithFlag.data.examListWithPreviousCompilationFlag;
@@ -99,7 +107,7 @@ function ExamList(){
         </div>);
     }
     else if(isErrorExams){
-        content = (<p>{JSON.stringify(errorExams)}</p>); //stringify per convertire valore javascript errorExams in stringa json
+        content = (<p>{JSON.stringify(errorExams)}</p>);
     }
     else{
         content = <h3>ERRORE NON GESTITO, CONTATTARE L'AMMINISTRATORE DEL SISTEMA</h3>;

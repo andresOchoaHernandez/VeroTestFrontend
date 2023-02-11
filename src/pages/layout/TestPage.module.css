@@ -48,6 +48,18 @@ label{
 .checkbox{
    color: var(--primary-color);
 }
+.radioButton{
+    /*font: inherit;
+    width: 1.15em;
+    height: 1.15em;
+    border: 10em solid;
+    cursor: pointer;*/
+    -ms-transform: scale(1.5); /* IE 9 */
+    -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+    transform: scale(1.5);
+
+}
+
 @media screen and (orientation:portrait){
     .buttoncrea{
         font-size: 3vw;

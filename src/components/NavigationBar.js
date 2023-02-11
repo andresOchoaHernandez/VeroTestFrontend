@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentScope } from "../redux/AuthenticationSlice";
 import classesNav from "../pages/layout/NavigationBar.module.css"
-import logoUni from '../img/logo.png';
+import logoUniSolo from '../img/logo_solo2.png';
+
 
 function NavigationBar(){
 
@@ -11,6 +12,7 @@ function NavigationBar(){
 
     const linkHome = scope.includes("DOCENTE")?"/home-docenti" : "/home-studenti"
 
+    //link del menu
     const menuLinks = [
         {
             name: "logout",
@@ -27,12 +29,12 @@ function NavigationBar(){
     }
 
     return (
-        <header className={classesNav.header} tabIndex="0">
+        <header aria-label="barra di navigazione" className={classesNav.header} tabIndex="0">
             <div>
-                <h4> VeroTest </h4>
-                <img className={classesNav.logo} src={logoUni} alt="logo università di verona" tabIndex="0"/>
+                <h4 tabIndex="0"> VeroTest </h4>
+                <img className={classesNav.logo} src={logoUniSolo} alt="logo università di verona" tabIndex="0"/>
             </div>
-            <nav>
+            <nav tabIndex="0">
                 <ul>
                     {/*per ogni elemento di menuLinks vado a creare un elemento <li> ognuno con un <Link> al link di menuLink e come nome quello indicato in menuLink*/}
                     {menuLinks.map((input,index) => { //creo elemento list item che contiene un elemento <Link> per ogni voce della navbar

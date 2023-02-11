@@ -39,7 +39,7 @@ function AddQuestion(){
                 return false;
             }
             
-            /* CHECK FOR AT LEAST ONE CORRECT ANSWER (1.0 POINTS) */
+            //recupero risposta con punteggio == 1.0 (risposta corretta)
             let correctAnswer = [];
 
             for(const risposta of domanda.risposte){
@@ -60,6 +60,7 @@ function AddQuestion(){
     const handleSubmit = async(event)=>{
         event.preventDefault();
 
+        //se input non valido non creo il test
         if (!validateInput()){
             return;
         }
@@ -107,10 +108,10 @@ function AddQuestion(){
     const handleDomandaInput = (event,index,isCheckBox=false) => {
         const formData = [...domandaInput];
         if(isCheckBox){
-            formData[index][event.target.name] = event.target.checked; //settiamo se vogliamo domanda con risposte numerate o in ordine casuale      
+            formData[index][event.target.name] = event.target.checked; //il nome della domanda in posizione index ha il check (settiamo se vogliamo domanda con risposte numerate o in ordine casuale)    
         }
         else{
-            formData[index][event.target.name] = event.target.value; //settiamo (ad esempio) nome domanda con il value che ha triggerato l'evento di handleDomandaInput
+            formData[index][event.target.name] = event.target.value; //il nome della domanda in posizione index ha valore value (settiamo (ad esempio) nome domanda con il value che ha triggerato l'evento di handleDomandaInput)
         }
         setDomandaInput(formData);
     }
@@ -179,7 +180,7 @@ function AddQuestion(){
                                             <input className={classesTest.longinput} name="testo" type="text" placeholder="Testo risposta" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             <label>Punteggio risposta:</label>
-                                            <input className={classesTest.middleinput} name="punteggio" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
+                                            <input className={classesTest.middleinput} name="punteggio" placeholder="max. 1.0" type="number" min="0.0" max="1.0" step="0.01" onChange={(event)=> handleRispostaInput(event,indexDomande,indexRisposte)} required/>
                                             <br/>
                                             {indexRisposte > 1 ?<button className={classesTest.buttonmanagequestion} onClick={()=>removeAnswer(indexDomande,indexRisposte)} >RIMUOVI RISPOSTA</button>:null}
                                             {domandaInput[indexDomande].risposte.length-1 === indexRisposte?<button className={classesTest.buttonmanagequestion} onClick={() => addRisposta(indexDomande)}>AGGIUNGI RISPOSTA</button>:null}

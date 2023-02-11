@@ -23,6 +23,7 @@ function ExecuteExam(){
     return (
         examInExec?(
             parseInt(nquestion) < domandeEsame.length ?
+                //ogni volta che si passa da una domanda all'altra viene renderizzato il componente <Question />
                 <Question 
                     userId={userId} 
                     dataTest={dataTest} 
